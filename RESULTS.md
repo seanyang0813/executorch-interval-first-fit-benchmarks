@@ -2,11 +2,11 @@
 
 ## Why results/final contains two models
 
-The ten-case holdout was frozen and run before the final storage-object-ID correctness correction. After that correction, the predeclared exact-confirmation subset reran RegNet-Y-3.2GF and SwinV2-S 256 on submitted commit a66bd3b1dd465b1806cd682610fb94d7f7a7459e. Those are therefore the only model measurements labeled exact-final.
+The ten-case holdout was frozen and run before the final storage-object-ID correctness correction. After that correction, the predeclared exact-confirmation subset reran RegNet-Y-3.2GF and SwinV2-S 256 on benchmarked commit a66bd3b1dd465b1806cd682610fb94d7f7a7459e. Those are therefore the only model measurements labeled exact-final.
 
 The other holdout rows remain published as earlier frozen evidence. They were not silently relabeled as final-commit reruns. ResNet34, Emformer, and MobileBERT are also retained as final-code path-equivalent controls because their conditional exits do not execute interval placement.
 
-## Exact submitted-commit confirmations
+## Exact benchmarked-commit confirmations
 
 | Case | Upstream bytes | Candidate bytes | Gain | Added planner time | Direct exact |
 |---|---:|---:|---:|---:|---|
@@ -51,5 +51,5 @@ This is a source-derived policy projection, not a fresh final-commit runtime rep
 
 ## Remaining evidence gap
 
-A complete ten-case rerun on the exact submitted commit has not been performed. The current exact-final claim is deliberately limited to RegNet and SwinV2 plus path-equivalent controls. Repeating all ten frozen cases on commit a66bd3b1 would close that provenance gap without changing the benchmark selection.
+Current PR head 3e3016c410aa2456cb507d5c7e9c3a453111dc5b has not yet been rerun. The exact model claim remains limited to benchmarked commit a66bd3b1dd465b1806cd682610fb94d7f7a7459e. Rerunning all ten frozen cases on the current head would close that provenance gap without changing benchmark selection.
 

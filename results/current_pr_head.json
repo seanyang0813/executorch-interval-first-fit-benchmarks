@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "current_pr_head": "3e3016c410aa2456cb507d5c7e9c3a453111dc5b",
+  "benchmarked_measurement_commit": "a66bd3b1dd465b1806cd682610fb94d7f7a7459e",
+  "pinned_upstream": "457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc",
+  "current_patch_sha256": "3cd008967cc32905a077ba3f19363c14b46ce239070ca4f853993b82ffc8c41e",
+  "benchmarked_patch_sha256": "af8cd429bb0209ed0682d0d0903fd7ca8697ede8daec25a8167d123637e51efb",
+  "current_planner_source_sha256": "d9e1a13da2edd0f052188ce58d0e805d81118c12d55592d99c3fe956e2d9c24b",
+  "change": "Graph-stable ordering for the conditional upstream-greedy baseline before supported early returns.",
+  "validation_status": "Focused tests and model benchmarks not rerun yet.",
+  "measurement_boundary": "Existing model measurements remain bound to the benchmarked measurement commit, not current_pr_head."
+}

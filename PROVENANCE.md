@@ -44,3 +44,13 @@ results/historical/rows.json removes machine-local stack-trace text while retain
 
 The patch, benchmark work, and this publication were produced with OpenAI Codex assistance. Human maintainers should independently review the algorithm and evidence.
 
+
+## Post-benchmark review fix
+
+- Current PR head: 3e3016c410aa2456cb507d5c7e9c3a453111dc5b
+- Benchmarked measurement commit: a66bd3b1dd465b1806cd682610fb94d7f7a7459e
+- Current patch SHA-256: 3cd008967cc32905a077ba3f19363c14b46ce239070ca4f853993b82ffc8c41e
+- Current planner source SHA-256: d9e1a13da2edd0f052188ce58d0e805d81118c12d55592d99c3fe956e2d9c24b
+- Validation status: focused tests and model benchmarks have not yet been rerun on the current head.
+
+The new commit stabilizes equal-size upstream-greedy ties inside the opt-in conditional planner. Existing measurements are not relabeled as current-head measurements.

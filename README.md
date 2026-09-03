@@ -1,5 +1,7 @@
 # ExecuTorch interval first-fit memory planner benchmarks
 
+> **Current head notice:** PR head 3e3016c410aa2456cb507d5c7e9c3a453111dc5b includes a post-benchmark determinism fix. Existing model measurements are bound to a66bd3b1dd465b1806cd682610fb94d7f7a7459e. See [CURRENT_HEAD.md](CURRENT_HEAD.md).
+
 Reproducibility artifacts for [pytorch/executorch#22508](https://github.com/pytorch/executorch/pull/22508).
 
 This is an external research artifact, not a replacement benchmark suite for ExecuTorch. The upstream PR contains only the planner change and focused tests.
@@ -8,13 +10,13 @@ This is an external research artifact, not a replacement benchmark suite for Exe
 
 Current ExecuTorch greedy() already sorts TensorSpecs by decreasing allocated size. Size ordering is not the contribution. The candidate places each size-sorted interval at the first aligned legal offset, then a bounded portfolio returns the smaller of upstream greedy and the candidate.
 
-The benchmark pin is ExecuTorch commit 457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc. The submitted patch commit is a66bd3b1dd465b1806cd682610fb94d7f7a7459e, and patches/interval_first_fit.patch has SHA-256 af8cd429bb0209ed0682d0d0903fd7ca8697ede8daec25a8167d123637e51efb.
+The benchmark pin is ExecuTorch commit 457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc. The benchmarked patch commit is a66bd3b1dd465b1806cd682610fb94d7f7a7459e, and patches/interval_first_fit.patch has SHA-256 af8cd429bb0209ed0682d0d0903fd7ca8697ede8daec25a8167d123637e51efb.
 
 ## Results
 
 See [the full model-by-model index](RESULTS.md) for every frozen holdout row, controls, and exact-final provenance.
 
-### Exact submitted-commit confirmations
+### Exact benchmarked-commit confirmations
 
 | Model | Upstream greedy | Portfolio result | Gain | Added planner time | Runtime replay |
 |---|---:|---:|---:|---:|---|
@@ -57,7 +59,7 @@ Randomized validation executed 10,000 cases, including 1,000 alias cases, with z
 - Runtime: serialized portable programs were loaded and replayed; direct upstream/candidate outputs had to be exact.
 - Accounting: failures, skips, nonconfirmatory eager comparisons, ties, and the first failed Emformer timing gate remain visible.
 
-## Reproduce the exact confirmation cases
+## Reproduce the benchmarked confirmation cases
 
 The commands below use a clean ExecuTorch checkout and the portable copy of the original final-policy runner. Follow ExecuTorch's normal source-build prerequisites for your platform.
 
@@ -90,7 +92,7 @@ Timing is machine-sensitive. Planned-byte equality, policy decisions, placement 
 
 ## Repository layout
 
-- patches/: exact submitted diff.
+- patches/: benchmarked submitted diff.
 - harness/: portable final-policy runner, its shared ExecuTorch model/export helper, randomized and boundary checkers, and the original discovery harness.
 - results/final/: exact submitted-commit RegNet and SwinV2 confirmations.
 - results/controls/: lower-bound, hard-cap, soft-benefit, and retained failed-timing controls.
