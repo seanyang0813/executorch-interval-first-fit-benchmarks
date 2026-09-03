@@ -1,138 +1,71 @@
 {
+  "schema_version": 2,
+  "pinned_upstream": "457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc",
+  "commit": "4e5a3906f456120dffd2ec31ea097b50dde17303",
+  "patch_sha256": "7ad25503ce5d048defd193be39ca08ce38d477f100c3b1d53ec3700d9a91241b",
+  "planner_source_sha256": "b7d9f1d7117cd147bd296346222a00d82e068f9ad94eb71fdb1eff9fa47d2923",
+  "frozen_holdout": {
+    "cases": 10,
+    "upstream_bytes": 156064272,
+    "candidate_bytes": 136608768,
+    "saved_bytes": 19455504,
+    "gain_percent": 12.466340790671167,
+    "sound_lower_bound_bytes": 134802432,
+    "gap_to_lower_bound_bytes": 1806336,
+    "wins": 8,
+    "ties": 2,
+    "regressions": 0,
+    "lower_bound_reached": 8,
+    "exact_direct_replays": 10,
+    "deterministic_layouts": 10,
+    "valid_layouts": 10,
+    "planner_median_across_cases_ms": {
+      "upstream_greedy": 17.103861499890627,
+      "candidate_only": 45.70979649997753,
+      "always_both": 62.82839850018718,
+      "conditional": 65.25257099974624
+    }
+  },
+  "controls": {
+    "emformer": {
+      "status": "ok",
+      "baseline_bytes": 5513216,
+      "candidate_bytes": 5513216,
+      "added_planner_ms": -31.218565999552084,
+      "runtime_direct_exact": true,
+      "deterministic_placements": true
+    },
+    "mobilebert": {
+      "status": "nonconfirmatory_output",
+      "baseline_bytes": 819328,
+      "candidate_bytes": 819328,
+      "added_planner_ms": -3.7668739996661316,
+      "runtime_direct_exact": true,
+      "deterministic_placements": true
+    }
+  },
+  "randomized": {
+    "master_seed": 3888128038,
+    "executed_cases": 10000,
+    "alias_cases": 1000,
+    "failure_count": 0,
+    "passed": true,
+    "planner_source_sha256": "b7d9f1d7117cd147bd296346222a00d82e068f9ad94eb71fdb1eff9fa47d2923",
+    "wall_time_s": 116.55368658099997
+  },
   "boundary": {
-    "all_candidate_no_larger": true,
     "all_decisions_correct": true,
+    "all_candidate_no_larger": true,
     "scenario_count": 6
   },
-  "branch": "codex/interval-first-fit-memory-planner",
-  "commit": "a66bd3b1dd465b1806cd682610fb94d7f7a7459e",
-  "final_commit_measurements": [
-    {
-      "added_planner_ms": 46.922730000005686,
-      "candidate_bytes": 8128512,
-      "case": "wb2_tv_regnet_y_3_2gf",
-      "conditional_planner_median_ms": 57.17930399987381,
-      "deterministic_placements": true,
-      "gain_percent": 15.859766277128548,
-      "runtime_direct_exact": true,
-      "upstream_bytes": 9660672,
-      "upstream_planner_median_ms": 10.256573999868124
-    },
-    {
-      "added_planner_ms": 814.0856710006119,
-      "candidate_bytes": 14155776,
-      "case": "wb2_tv_swin_v2_s_256",
-      "conditional_planner_median_ms": 1089.3896450002103,
-      "deterministic_placements": true,
-      "gain_percent": 21.739199661741697,
-      "runtime_direct_exact": true,
-      "upstream_bytes": 18087952,
-      "upstream_planner_median_ms": 275.3039739995984
-    }
-  ],
-  "first_emformer_timing_observation": {
-    "added_planner_ms": 233.74189800017575,
-    "gate_ms": 100,
-    "passed": false,
-    "remedy": "take unconditional hard-budget return before lower-bound computation"
-  },
-  "frozen_holdout": {
-    "all_gates_pass": true,
-    "base_commit": "c65ad53ad6861de3d9a76f31ddaf882a7115176f",
-    "byte_valid_rows": 10,
-    "candidate_bytes_total": 136608768,
-    "candidate_patch_sha256": "62ee481fe0e7eb54f0781a209eb00d79c68a1b478a540eab9a3b4bad45837eea",
-    "deterministic_rows": 10,
-    "direct_exact_rows": 10,
-    "eager_close_rows": 8,
-    "freeze_manifest_sha256": "983b0ff8b3dc454ba67d42acf7499f23d7d820fcd128b93422230e69983f1763",
-    "gates": {
-      "byte_regressions": true,
-      "direct_replay_mismatches": true,
-      "maximum_added_conditional_planner_ms": true,
-      "minimum_byte_valid_cases": true,
-      "previous_measured_gains_above_2_percent_preserved": true,
-      "soft_budget_controls_follow_policy": true
-    },
-    "maximum_added_planner_ms": 854.3060059964773,
-    "median_added_planner_ms": 108.81388949928805,
-    "median_gain_percent": 9.665342800853205,
-    "non_ok_rows": [
-      {
-        "case": "wb2_tv_resnet152",
-        "runtime_direct_exact": true,
-        "runtime_eager_close": false,
-        "status": "nonconfirmatory_output"
-      },
-      {
-        "case": "wb2_tv_wide_resnet101_2",
-        "runtime_direct_exact": true,
-        "runtime_eager_close": false,
-        "status": "nonconfirmatory_output"
-      }
-    ],
-    "regressions": 0,
-    "rows": 10,
-    "saved_bytes_total": 19455504,
-    "schema_version": 1,
-    "soft_budget_control_rows": 2,
-    "soft_budget_controls_running_candidate": 2,
-    "ties": 2,
-    "upstream_bytes_total": 156064272,
-    "weighted_gain_percent": 12.466340790671167,
-    "wins": 8
-  },
   "historical_projection": {
-    "byte_valid_rows": 51,
-    "candidate_bytes_total": 3353515712,
-    "lost_savings_vs_unbudgeted_bytes": 1935360,
-    "lost_wins_vs_unbudgeted": 4,
-    "material_wins_lost": 0,
-    "regressions": 0,
     "rows": 56,
-    "saved_bytes_total": 43690864,
-    "skipped_candidate_rows": 7,
+    "byte_valid_rows": 51,
+    "wins": 21,
     "ties": 30,
-    "upstream_bytes_total": 3397206576,
-    "weighted_gain_percent": 1.2860820507254311,
-    "wins": 21
-  },
-  "patch_sha256": "af8cd429bb0209ed0682d0d0903fd7ca8697ede8daec25a8167d123637e51efb",
-  "path_equivalent_controls": [
-    {
-      "added_planner_ms": -0.02764199996363459,
-      "candidate_bytes": 6422528,
-      "case": "wb2_tv_resnet34",
-      "reason": "lower-bound early exit does not execute interval placement",
-      "runtime_direct_exact": true,
-      "upstream_bytes": 6422528
-    },
-    {
-      "added_planner_ms": 25.542759000018123,
-      "candidate_bytes": 5513216,
-      "case": "registry_emformer_predict",
-      "reason": "hard-budget exit does not execute interval placement",
-      "runtime_direct_exact": true,
-      "upstream_bytes": 5513216
-    },
-    {
-      "added_planner_ms": 0.3369679998286301,
-      "candidate_bytes": 819328,
-      "case": "registry_mobilebert",
-      "reason": "soft-benefit exit does not execute interval placement",
-      "runtime_direct_exact": true,
-      "runtime_eager_close": false,
-      "upstream_bytes": 819328
-    }
-  ],
-  "pinned_upstream": "457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc",
-  "planner_source_sha256": "80aea49caeb56d2c8da4854a3d350f8276ce3500f5626a577e3e17f1eefdf90d",
-  "randomized": {
-    "alias_cases": 1000,
-    "executed_cases": 10000,
-    "failure_count": 0,
-    "passed": true
-  },
-  "raw_runner_metadata_boundary": "Saved research runners retain historical base_commit and candidate_patch_sha256 fields. This record binds reruns to the actual imported clean worktree.",
-  "schema_version": 1
+    "regressions": 0,
+    "upstream_bytes": 3397206576,
+    "candidate_bytes": 3353515712,
+    "gain_percent": 1.286
+  }
 }

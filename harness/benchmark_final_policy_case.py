@@ -18,7 +18,7 @@ from torch.utils._pytree import tree_flatten, tree_map
 
 
 BASE_COMMIT = "457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc"
-PATCH_SHA256 = "af8cd429bb0209ed0682d0d0903fd7ca8697ede8daec25a8167d123637e51efb"
+PATCH_SHA256 = "7ad25503ce5d048defd193be39ca08ce38d477f100c3b1d53ec3700d9a91241b"
 REPEATS = 7
 CORE_PATH = Path(__file__).with_name("benchmark_memory_planning.py")
 
@@ -785,6 +785,27 @@ def _build_program(case: Case, policy: str) -> Dict[str, Any]:
             deterministic = deterministic and (
                 _canonical(repeat_result, call["specs"]) == expected
             )
+        planner_probe_median_s = None
+        if policy == "conditional_two_strategy":
+            planner_probe_median_s = {}
+            for probe_name, probe in {
+                "upstream_greedy": core.greedy,
+                "candidate_only": core.interval_first_fit,
+                "always_both": core.greedy_interval_first_fit,
+                "conditional": core.greedy_interval_first_fit_conditional,
+            }.items():
+                samples = []
+                for _ in range(REPEATS):
+                    started = time.perf_counter()
+                    probe(
+                        call["alignment"],
+                        call["specs"],
+                        call["graph_module"],
+                        call["graph_signature"],
+                        call["extra_padding"],
+                    )
+                    samples.append(time.perf_counter() - started)
+                planner_probe_median_s[probe_name] = statistics.median(samples)
         analysis = _analyze_plan(
             call["alignment"],
             call["specs"],
@@ -822,6 +843,7 @@ def _build_program(case: Case, policy: str) -> Dict[str, Any]:
                 "planner_p90_s": _percentile(repeat_times, 0.9),
                 "planner_min_s": min(repeat_times),
                 "planner_max_s": max(repeat_times),
+                "planner_probe_median_s": planner_probe_median_s,
                 "deterministic_placements": deterministic,
                 "selected_policy": selected,
                 "independent_greedy_bytes": independent_greedy_bytes,
@@ -847,6 +869,14 @@ def _build_program(case: Case, policy: str) -> Dict[str, Any]:
         "planning_units": units,
         "planner_median_s": sum(unit["planner_median_s"] for unit in units),
         "planner_p90_s": sum(unit["planner_p90_s"] for unit in units),
+        "planner_probe_median_s": (
+            {
+                name: sum(unit["planner_probe_median_s"][name] for unit in units)
+                for name in units[0]["planner_probe_median_s"]
+            }
+            if units and units[0]["planner_probe_median_s"] is not None
+            else None
+        ),
         "allocation_count": sum(unit["allocation_count"] for unit in units),
         "primary_interval_count": sum(
             unit["primary_interval_count"] for unit in units

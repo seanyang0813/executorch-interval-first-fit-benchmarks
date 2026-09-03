@@ -43,10 +43,9 @@
     "nested_lifetimes": 1667,
     "sparse_overlap": 1666
   },
-  "planner_source": "exir/memory_planning.py",
-  "planner_source_sha256": "80aea49caeb56d2c8da4854a3d350f8276ce3500f5626a577e3e17f1eefdf90d",
+  "planner_source": "/home/seanyang/Documents/math/executorch-upstream-pr-pythonpath-457a2a8b9f/executorch/exir/memory_planning.py",
+  "planner_source_sha256": "b7d9f1d7117cd147bd296346222a00d82e068f9ad94eb71fdb1eff9fa47d2923",
   "requested_cases": 10000,
   "schema_version": 1,
-  "wall_time_s": 113.73008753300019,
-  "published_note": "Machine-local planner path normalized; measurements unchanged."
+  "wall_time_s": 116.55368658099997
 }

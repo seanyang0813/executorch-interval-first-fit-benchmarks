@@ -1,23 +1,23 @@
 {
-  "added_planner_ms": 44.41909099841723,
-  "base_commit": "c65ad53ad6861de3d9a76f31ddaf882a7115176f",
+  "added_planner_ms": 26.50384199932887,
+  "base_commit": "457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc",
   "baseline_bytes": 9660672,
   "byte_valid": true,
   "candidate_bytes": 8128512,
   "candidate_excess_bytes": 0,
   "candidate_no_larger": true,
-  "candidate_patch_sha256": "62ee481fe0e7eb54f0781a209eb00d79c68a1b478a540eab9a3b4bad45837eea",
-  "candidate_planner_fraction_of_pipeline": 0.00532227645913234,
+  "candidate_patch_sha256": "7ad25503ce5d048defd193be39ca08ce38d477f100c3b1d53ec3700d9a91241b",
+  "candidate_planner_fraction_of_pipeline": 0.003766514021323941,
   "case": "wb2_tv_regnet_y_3_2gf",
   "category": "image classification",
   "change_bytes": -1532160,
   "conditional_two_strategy": {
     "allocation_count": 485,
     "deterministic_placements": true,
-    "edge_export_time_s": 9.176112695000484,
+    "edge_export_time_s": 8.644198672999664,
     "layout_valid": true,
     "lower_bound_bytes": 8128512,
-    "lowering_time_s": 1.131649438997556,
+    "lowering_time_s": 1.0959128179993058,
     "max_activation_bytes": 8128512,
     "method_buffer_sizes": {
       "forward": [
@@ -30,11 +30,17 @@
     },
     "overlap_density": 0.012432895300200902,
     "overlap_pair_count": 755,
-    "planner_median_s": 0.05503562300145859,
-    "planner_p90_s": 0.05558078919711988,
+    "planner_median_s": 0.03679866699985723,
+    "planner_p90_s": 0.036882450000121025,
+    "planner_probe_median_s": {
+      "always_both": 0.03505064199998742,
+      "candidate_only": 0.024230420999629132,
+      "conditional": 0.03663650399994367,
+      "upstream_greedy": 0.010718960000303923
+    },
     "planning_units": [
       {
-        "actual_planner_time_s": 0.056109330005710945,
+        "actual_planner_time_s": 0.03691561800042109,
         "alias_count": 0,
         "alias_fallback_exact": null,
         "allocation_count": 485,
@@ -75,21 +81,27 @@
         "peak_live_allocation_count": 3,
         "peak_live_bytes": 8128512,
         "plan_bytes": 8128512,
-        "planner_max_s": 0.05590330599807203,
-        "planner_median_s": 0.05503562300145859,
-        "planner_min_s": 0.05483888899470912,
-        "planner_p90_s": 0.05558078919711988,
+        "planner_max_s": 0.0369035880003139,
+        "planner_median_s": 0.03679866699985723,
+        "planner_min_s": 0.03665824400013662,
+        "planner_p90_s": 0.036882450000121025,
+        "planner_probe_median_s": {
+          "always_both": 0.03505064199998742,
+          "candidate_only": 0.024230420999629132,
+          "conditional": 0.03663650399994367,
+          "upstream_greedy": 0.010718960000303923
+        },
         "possible_pair_count": 60726,
         "primary_interval_count": 349,
         "repeat_count": 7,
         "repeat_times_s": [
-          0.05536577799648512,
-          0.054971691002720036,
-          0.054891569998289924,
-          0.05590330599807203,
-          0.05503562300145859,
-          0.05483888899470912,
-          0.05511354299960658
+          0.03686835799999244,
+          0.03683255600026314,
+          0.0369035880003139,
+          0.036781775999770616,
+          0.03665824400013662,
+          0.03674349599987181,
+          0.03679866699985723
         ],
         "selected_policy": "interval_first_fit"
       }
@@ -98,10 +110,10 @@
     "possible_pair_count": 60726,
     "primary_interval_count": 349,
     "program_bytes": 77643008,
-    "program_load_time_s": 1.8780003301799297e-05,
-    "serialization_time_s": 0.03285497299657436,
+    "program_load_time_s": 2.0290000065870117e-05,
+    "serialization_time_s": 0.029842050000297604,
     "status": "planned",
-    "total_pipeline_time_s": 10.340617106994614
+    "total_pipeline_time_s": 9.769953540999268
   },
   "deterministic_placements": true,
   "dynamic_shapes": false,
@@ -121,7 +133,7 @@
   "family": "RegNet",
   "gain_fraction": 0.15859766277128548,
   "lower_bound_bytes": 8128512,
-  "planner_ratio": 5.183954890890202,
+  "planner_ratio": 3.574482033251523,
   "planner_repeats": 7,
   "replays": [
     {
@@ -175,10 +187,10 @@
   "upstream_greedy": {
     "allocation_count": 485,
     "deterministic_placements": true,
-    "edge_export_time_s": 9.268176106001192,
+    "edge_export_time_s": 8.765606907000802,
     "layout_valid": true,
     "lower_bound_bytes": 8128512,
-    "lowering_time_s": 1.1148219500028063,
+    "lowering_time_s": 1.067338063000534,
     "max_activation_bytes": 9660672,
     "method_buffer_sizes": {
       "forward": [
@@ -191,11 +203,12 @@
     },
     "overlap_density": 0.012432895300200902,
     "overlap_pair_count": 755,
-    "planner_median_s": 0.010616532003041357,
-    "planner_p90_s": 0.01071354179730406,
+    "planner_median_s": 0.010294825000528363,
+    "planner_p90_s": 0.010309127000073203,
+    "planner_probe_median_s": null,
     "planning_units": [
       {
-        "actual_planner_time_s": 0.010633402998792008,
+        "actual_planner_time_s": 0.01034192599945527,
         "alias_count": 0,
         "alias_fallback_exact": null,
         "allocation_count": 485,
@@ -240,21 +253,22 @@
         "peak_live_allocation_count": 3,
         "peak_live_bytes": 8128512,
         "plan_bytes": 9660672,
-        "planner_max_s": 0.010812674998305738,
-        "planner_median_s": 0.010616532003041357,
-        "planner_min_s": 0.010589261997665744,
-        "planner_p90_s": 0.01071354179730406,
+        "planner_max_s": 0.010319795000214071,
+        "planner_median_s": 0.010294825000528363,
+        "planner_min_s": 0.01026351399923442,
+        "planner_p90_s": 0.010309127000073203,
+        "planner_probe_median_s": null,
         "possible_pair_count": 60726,
         "primary_interval_count": 349,
         "repeat_count": 7,
         "repeat_times_s": [
-          0.010594362000119872,
-          0.010812674998305738,
-          0.010635352999088354,
-          0.010647452996636275,
-          0.010589261997665744,
-          0.010616532003041357,
-          0.010594671999569982
+          0.01026351399923442,
+          0.010297674999492301,
+          0.010319795000214071,
+          0.010302014999979292,
+          0.010271164000187127,
+          0.010294825000528363,
+          0.010291124999639578
         ],
         "selected_policy": "greedy_tie_or_better"
       }
@@ -263,11 +277,11 @@
     "possible_pair_count": 60726,
     "primary_interval_count": 349,
     "program_bytes": 77643008,
-    "program_load_time_s": 2.730100095504895e-05,
-    "serialization_time_s": 0.033140947998617776,
+    "program_load_time_s": 2.032999964285409e-05,
+    "serialization_time_s": 0.029995041999427485,
     "status": "planned",
-    "total_pipeline_time_s": 10.416139004002616
+    "total_pipeline_time_s": 9.862940012000763
   },
-  "wall_time_s": 47.54042953700264,
+  "wall_time_s": 46.81545596200067,
   "weights": "deterministic_synthetic"
 }

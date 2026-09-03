@@ -1,55 +1,41 @@
-# Model-by-model results
+# Current-head model results
 
-## Why results/final contains two models
+All rows use ExecuTorch base `457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc`, PR head `4e5a3906f456120dffd2ec31ea097b50dde17303`, and patch SHA-256 `7ad25503ce5d048defd193be39ca08ce38d477f100c3b1d53ec3700d9a91241b`.
 
-The ten-case holdout was frozen and run before the final storage-object-ID correctness correction. After that correction, the predeclared exact-confirmation subset reran RegNet-Y-3.2GF and SwinV2-S 256 on benchmarked commit a66bd3b1dd465b1806cd682610fb94d7f7a7459e. Those are therefore the only model measurements labeled exact-final.
+Planner columns are median milliseconds over seven direct calls: `G` is upstream greedy, `I` is candidate-only interval first-fit, `B` is always-both with minimum selection, and `C` is the proposed conditional portfolio.
 
-The other holdout rows remain published as earlier frozen evidence. They were not silently relabeled as final-commit reruns. ResNet34, Emformer, and MobileBERT are also retained as final-code path-equivalent controls because their conditional exits do not execute interval placement.
+| Case | Status | Upstream B | Selected B | Gain | Lower bound B | Gap B | G ms | I ms | B ms | C ms |
+|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| ConvNeXt-Large | ok | 41,060,352 | 40,759,296 | 0.733% | 39,555,072 | 1,204,224 | 8.981 | 24.057 | 33.205 | 34.917 |
+| DenseNet161 | ok | 15,455,232 | 12,644,352 | 18.187% | 12,644,352 | 0 | 27.530 | 82.961 | 111.301 | 115.989 |
+| EfficientNet-V2-M | ok | 8,732,672 | 8,429,568 | 3.471% | 7,827,456 | 602,112 | 40.310 | 129.199 | 170.266 | 172.988 |
+| MNASNet-0.5 | lower-bound tie | 5,125,120 | 5,125,120 | 0.000% | 5,125,120 | 0 | 4.241 | 8.151 | 12.482 | 5.133 |
+| RegNet-Y-3.2GF | ok | 9,660,672 | 8,128,512 | 15.860% | 8,128,512 | 0 | 10.719 | 24.230 | 35.051 | 36.637 |
+| ResNet152 | eager nonconfirmatory | 14,614,528 | 9,633,792 | 34.081% | 9,633,792 | 0 | 22.381 | 61.163 | 83.520 | 86.366 |
+| ResNet34 | lower-bound tie | 6,422,528 | 6,422,528 | 0.000% | 6,422,528 | 0 | 2.552 | 5.443 | 7.987 | 3.225 |
+| Swin-S batch 2 | ok | 22,290,688 | 21,676,032 | 2.757% | 21,676,032 | 0 | 180.758 | 498.894 | 673.322 | 677.456 |
+| SwinV2-S 256 | ok | 18,087,952 | 14,155,776 | 21.739% | 14,155,776 | 0 | 276.418 | 797.838 | 1,070.106 | 1,077.919 |
+| Wide-ResNet101-2 | eager nonconfirmatory | 14,614,528 | 9,633,792 | 34.081% | 9,633,792 | 0 | 11.827 | 30.257 | 42.137 | 44.139 |
 
-## Exact benchmarked-commit confirmations
+Aggregate: 156,064,272 upstream bytes versus 136,608,768 selected bytes, saving 19,455,504 bytes or 12.466%. There were eight wins, two ties, zero regressions, ten valid deterministic layouts, and ten exact direct portable-runtime comparisons. Median-across-case planner times were 17.104 ms (`G`), 45.710 ms (`I`), 62.828 ms (`B`), and 65.253 ms (`C`).
 
-| Case | Upstream bytes | Candidate bytes | Gain | Added planner time | Direct exact |
-|---|---:|---:|---:|---:|---|
-| RegNet-Y-3.2GF | 9,660,672 | 8,128,512 | 15.860% | 46.923 ms | yes |
-| SwinV2-S 256 | 18,087,952 | 14,155,776 | 21.739% | 814.086 ms | yes |
+The two eager-nonconfirmatory rows still have exact upstream-versus-candidate portable-runtime equality. They are not presented as eager-equivalence evidence.
 
-## Frozen ten-case holdout
+## Controls and failures
 
-| Case | Status | Upstream bytes | Candidate bytes | Gain | Added planner time | Direct exact | Eager close |
-|---|---|---:|---:|---:|---:|---|---|
-| ConvNeXt-Large | ok | 41,060,352 | 40,759,296 | 0.733% | 29.737 ms | yes | yes |
-| DenseNet161 | ok | 15,455,232 | 12,644,352 | 18.187% | 182.772 ms | yes | yes |
-| EfficientNet-V2-M | ok | 8,732,672 | 8,429,568 | 3.471% | 247.442 ms | yes | yes |
-| MNASNet-0.5 | ok | 5,125,120 | 5,125,120 | 0.000% | 0.608 ms | yes | yes |
-| RegNet-Y-3.2GF | ok | 9,660,672 | 8,128,512 | 15.860% | 44.419 ms | yes | yes |
-| ResNet152 | nonconfirmatory eager | 14,614,528 | 9,633,792 | 34.081% | 150.552 ms | yes | no |
-| ResNet34 | ok | 6,422,528 | 6,422,528 | 0.000% | 0.479 ms | yes | yes |
-| Swin-S batch 2 | ok | 22,290,688 | 21,676,032 | 2.757% | 475.836 ms | yes | yes |
-| SwinV2-S 256 | ok | 18,087,952 | 14,155,776 | 21.739% | 854.306 ms | yes | yes |
-| Wide-ResNet101-2 | nonconfirmatory eager | 14,614,528 | 9,633,792 | 34.081% | 67.076 ms | yes | no |
-
-Aggregate: 156,064,272 upstream bytes versus 136,608,768 candidate bytes, saving 19,455,504 bytes or 12.466%. There were eight wins, two ties, zero byte regressions, and ten direct-exact portable-runtime comparisons.
-
-Nonconfirmatory eager means the upstream and candidate portable programs matched each other exactly, but comparison against eager output did not satisfy the diagnostic closeness check. These rows remain visible and are not presented as eager-equivalence evidence.
-
-Machine-readable rows are in results/frozen_holdout/results.csv and results/frozen_holdout/cases/.
-
-## Exit-path and failed-timing controls
-
-| Case | Observation | Upstream bytes | Result bytes | Added planner time | Direct exact |
+| Case | Current-head observation | Upstream B | Selected B | Added planner ms | Direct exact |
 |---|---|---:|---:|---:|---|
-| ResNet34 | lower-bound exit | 6,422,528 | 6,422,528 | -0.028 ms | yes |
-| Emformer predictor | first clean replay; failed 100 ms gate | 5,513,216 | 5,513,216 | 233.742 ms | yes |
-| Emformer predictor | hard-cap-before-lower-bound final path | 5,513,216 | 5,513,216 | 25.543 ms | yes |
-| MobileBERT | soft-benefit exit; eager nonconfirmatory | 819,328 | 819,328 | 0.337 ms | yes |
+| Emformer predictor | no-gain conditional exit | 5,513,216 | 5,513,216 | -31.219 | yes |
+| MobileBERT | no-gain conditional exit; eager nonconfirmatory | 819,328 | 819,328 | -3.767 | yes |
+
+The retained `registry_emformer_predict_first.json` is a historical failed 100 ms timing gate from an earlier implementation (+233.742 ms), not the current head. It remains published to preserve failure history.
+
+No current-head model process failed or was skipped, no selected layout regressed, and no holdout case used alias fallback. The randomized checker executed 10,000 cases with zero failures, including 1,000 alias cases. All six work-boundary scenarios made the expected run/skip decision and selected no larger layout.
+
+The full planner test file produced 51 passes and one environment failure because `torch.ops.llama.sdpa_with_kv_cache` was unavailable; the same failure was reproduced on the pinned baseline and is not attributed to this patch. Changed-file lint passed.
+
+Raw rows are in `results/frozen_holdout/cases/`; the normalized row table is `results/frozen_holdout/results.csv`.
 
 ## Historical corpus
 
-The historical source snapshot contains 56 rows: 18 development rows and 38 untouched-holdout rows. Fifty-one rows are byte-valid. The projected final policy has 21 wins, 30 ties, zero regressions, 3,397,206,576 upstream bytes, and 3,353,515,712 selected bytes, for 1.286% weighted savings.
-
-This is a source-derived policy projection, not a fresh final-commit runtime replay of all 56 rows. Every row and status is available in results/historical/rows.csv and results/historical/rows.json.
-
-## Remaining evidence gap
-
-Current PR head 3e3016c410aa2456cb507d5c7e9c3a453111dc5b has not yet been rerun. The exact model claim remains limited to benchmarked commit a66bd3b1dd465b1806cd682610fb94d7f7a7459e. Rerunning all ten frozen cases on the current head would close that provenance gap without changing benchmark selection.
-
+The historical snapshot contains 56 rows, 51 byte-valid. Its projected final policy has 21 wins, 30 ties, zero regressions, 3,397,206,576 upstream bytes, and 3,353,515,712 selected bytes, for 1.286% weighted savings. This remains a source-derived projection, not a current-head runtime replay.

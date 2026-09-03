@@ -1,46 +1,276 @@
 {
-  "all_gates_pass": true,
-  "base_commit": "c65ad53ad6861de3d9a76f31ddaf882a7115176f",
-  "byte_valid_rows": 10,
-  "candidate_bytes_total": 136608768,
-  "candidate_patch_sha256": "62ee481fe0e7eb54f0781a209eb00d79c68a1b478a540eab9a3b4bad45837eea",
-  "deterministic_rows": 10,
-  "direct_exact_rows": 10,
-  "eager_close_rows": 8,
-  "freeze_manifest_sha256": "983b0ff8b3dc454ba67d42acf7499f23d7d820fcd128b93422230e69983f1763",
-  "gates": {
-    "byte_regressions": true,
-    "direct_replay_mismatches": true,
-    "maximum_added_conditional_planner_ms": true,
-    "minimum_byte_valid_cases": true,
-    "previous_measured_gains_above_2_percent_preserved": true,
-    "soft_budget_controls_follow_policy": true
+  "schema_version": 1,
+  "base_commit": "457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc",
+  "head_commit": "4e5a3906f456120dffd2ec31ea097b50dde17303",
+  "patch_sha256": "7ad25503ce5d048defd193be39ca08ce38d477f100c3b1d53ec3700d9a91241b",
+  "planner_source_sha256": "b7d9f1d7117cd147bd296346222a00d82e068f9ad94eb71fdb1eff9fa47d2923",
+  "methodology": {
+    "corpus": "frozen 10-case untouched holdout",
+    "repeats_per_planner": 7,
+    "timing_statistic": "median wall-clock seconds converted to milliseconds",
+    "execution": "models sequential; planner modes sequential in fixed upstream/candidate/always-both/conditional order",
+    "candidate_metric": "min(current upstream greedy, interval first-fit) under conditional policy"
   },
-  "maximum_added_planner_ms": 854.3060059964773,
-  "median_added_planner_ms": 108.81388949928805,
-  "median_gain_percent": 9.665342800853205,
-  "non_ok_rows": [
+  "aggregate": {
+    "cases": 10,
+    "upstream_bytes": 156064272,
+    "candidate_bytes": 136608768,
+    "saved_bytes": 19455504,
+    "gain_percent": 12.466340790671167,
+    "sound_lower_bound_bytes": 134802432,
+    "gap_to_lower_bound_bytes": 1806336,
+    "wins": 8,
+    "ties": 2,
+    "regressions": 0,
+    "lower_bound_reached": 8,
+    "exact_direct_replays": 10,
+    "deterministic_layouts": 10,
+    "valid_layouts": 10,
+    "planner_median_across_cases_ms": {
+      "upstream_greedy": 17.103861499890627,
+      "candidate_only": 45.70979649997753,
+      "always_both": 62.82839850018718,
+      "conditional": 65.25257099974624
+    }
+  },
+  "rows": [
+    {
+      "case": "wb2_tv_convnext_large",
+      "family": "ConvNeXt",
+      "status": "ok",
+      "upstream_bytes": 41060352,
+      "candidate_bytes": 40759296,
+      "saved_bytes": 301056,
+      "gain_percent": 0.7332036510549155,
+      "sound_lower_bound_bytes": 39555072,
+      "gap_to_lower_bound_bytes": 1204224,
+      "selected_policy": "interval_first_fit",
+      "runtime_direct_exact": true,
+      "runtime_eager_close": true,
+      "deterministic_placements": true,
+      "layout_valid": true,
+      "planner_median_ms": {
+        "always_both": 33.20509400055016,
+        "candidate_only": 24.05736499986233,
+        "conditional": 34.917009999844595,
+        "upstream_greedy": 8.981195999695046
+      }
+    },
+    {
+      "case": "wb2_tv_densenet161",
+      "family": "DenseNet",
+      "status": "ok",
+      "upstream_bytes": 15455232,
+      "candidate_bytes": 12644352,
+      "saved_bytes": 2810880,
+      "gain_percent": 18.187239117471677,
+      "sound_lower_bound_bytes": 12644352,
+      "gap_to_lower_bound_bytes": 0,
+      "selected_policy": "interval_first_fit",
+      "runtime_direct_exact": true,
+      "runtime_eager_close": true,
+      "deterministic_placements": true,
+      "layout_valid": true,
+      "planner_median_ms": {
+        "always_both": 111.30060499999672,
+        "candidate_only": 82.96080699983577,
+        "conditional": 115.98876200059749,
+        "upstream_greedy": 27.529647000847035
+      }
+    },
+    {
+      "case": "wb2_tv_efficientnet_v2_m",
+      "family": "EfficientNetV2",
+      "status": "ok",
+      "upstream_bytes": 8732672,
+      "candidate_bytes": 8429568,
+      "saved_bytes": 303104,
+      "gain_percent": 3.4709193245778613,
+      "sound_lower_bound_bytes": 7827456,
+      "gap_to_lower_bound_bytes": 602112,
+      "selected_policy": "interval_first_fit",
+      "runtime_direct_exact": true,
+      "runtime_eager_close": true,
+      "deterministic_placements": true,
+      "layout_valid": true,
+      "planner_median_ms": {
+        "always_both": 170.26647399961803,
+        "candidate_only": 129.19918300030986,
+        "conditional": 172.98787199979415,
+        "upstream_greedy": 40.31030100031785
+      }
+    },
+    {
+      "case": "wb2_tv_mnasnet0_5",
+      "family": "MNASNet",
+      "status": "ok",
+      "upstream_bytes": 5125120,
+      "candidate_bytes": 5125120,
+      "saved_bytes": 0,
+      "gain_percent": 0,
+      "sound_lower_bound_bytes": 5125120,
+      "gap_to_lower_bound_bytes": 0,
+      "selected_policy": "greedy_lower_bound_early_exit",
+      "runtime_direct_exact": true,
+      "runtime_eager_close": true,
+      "deterministic_placements": true,
+      "layout_valid": true,
+      "planner_median_ms": {
+        "always_both": 12.48225499966793,
+        "candidate_only": 8.150914999532688,
+        "conditional": 5.133251999723143,
+        "upstream_greedy": 4.241339999680349
+      }
+    },
+    {
+      "case": "wb2_tv_regnet_y_3_2gf",
+      "family": "RegNet",
+      "status": "ok",
+      "upstream_bytes": 9660672,
+      "candidate_bytes": 8128512,
+      "saved_bytes": 1532160,
+      "gain_percent": 15.859766277128548,
+      "sound_lower_bound_bytes": 8128512,
+      "gap_to_lower_bound_bytes": 0,
+      "selected_policy": "interval_first_fit",
+      "runtime_direct_exact": true,
+      "runtime_eager_close": true,
+      "deterministic_placements": true,
+      "layout_valid": true,
+      "planner_median_ms": {
+        "always_both": 35.05064199998742,
+        "candidate_only": 24.230420999629132,
+        "conditional": 36.63650399994367,
+        "upstream_greedy": 10.718960000303923
+      }
+    },
     {
       "case": "wb2_tv_resnet152",
+      "family": "ResNet",
+      "status": "nonconfirmatory_output",
+      "upstream_bytes": 14614528,
+      "candidate_bytes": 9633792,
+      "saved_bytes": 4980736,
+      "gain_percent": 34.08071748878923,
+      "sound_lower_bound_bytes": 9633792,
+      "gap_to_lower_bound_bytes": 0,
+      "selected_policy": "interval_first_fit",
       "runtime_direct_exact": true,
       "runtime_eager_close": false,
-      "status": "nonconfirmatory_output"
+      "deterministic_placements": true,
+      "layout_valid": true,
+      "planner_median_ms": {
+        "always_both": 83.51962500000809,
+        "candidate_only": 61.16290299996763,
+        "conditional": 86.3658239995857,
+        "upstream_greedy": 22.380872999747226
+      }
+    },
+    {
+      "case": "wb2_tv_resnet34",
+      "family": "ResNet",
+      "status": "ok",
+      "upstream_bytes": 6422528,
+      "candidate_bytes": 6422528,
+      "saved_bytes": 0,
+      "gain_percent": 0,
+      "sound_lower_bound_bytes": 6422528,
+      "gap_to_lower_bound_bytes": 0,
+      "selected_policy": "greedy_lower_bound_early_exit",
+      "runtime_direct_exact": true,
+      "runtime_eager_close": true,
+      "deterministic_placements": true,
+      "layout_valid": true,
+      "planner_median_ms": {
+        "always_both": 7.986679999703483,
+        "candidate_only": 5.442794999908074,
+        "conditional": 3.2247150002149283,
+        "upstream_greedy": 2.552496000134852
+      }
+    },
+    {
+      "case": "wb2_tv_swin_s_b2",
+      "family": "Swin",
+      "status": "ok",
+      "upstream_bytes": 22290688,
+      "candidate_bytes": 21676032,
+      "saved_bytes": 614656,
+      "gain_percent": 2.7574563871693867,
+      "sound_lower_bound_bytes": 21676032,
+      "gap_to_lower_bound_bytes": 0,
+      "selected_policy": "interval_first_fit",
+      "runtime_direct_exact": true,
+      "runtime_eager_close": true,
+      "deterministic_placements": true,
+      "layout_valid": true,
+      "planner_median_ms": {
+        "always_both": 673.322265999559,
+        "candidate_only": 498.8944240003548,
+        "conditional": 677.4560020003264,
+        "upstream_greedy": 180.75759400016977
+      }
+    },
+    {
+      "case": "wb2_tv_swin_v2_s_256",
+      "family": "SwinV2",
+      "status": "ok",
+      "upstream_bytes": 18087952,
+      "candidate_bytes": 14155776,
+      "saved_bytes": 3932176,
+      "gain_percent": 21.739199661741697,
+      "sound_lower_bound_bytes": 14155776,
+      "gap_to_lower_bound_bytes": 0,
+      "selected_policy": "interval_first_fit",
+      "runtime_direct_exact": true,
+      "runtime_eager_close": true,
+      "deterministic_placements": true,
+      "layout_valid": true,
+      "planner_median_ms": {
+        "always_both": 1070.1064770000812,
+        "candidate_only": 797.8384369998821,
+        "conditional": 1077.918707000208,
+        "upstream_greedy": 276.4184229999955
+      }
     },
     {
       "case": "wb2_tv_wide_resnet101_2",
+      "family": "WideResNet",
+      "status": "nonconfirmatory_output",
+      "upstream_bytes": 14614528,
+      "candidate_bytes": 9633792,
+      "saved_bytes": 4980736,
+      "gain_percent": 34.08071748878923,
+      "sound_lower_bound_bytes": 9633792,
+      "gap_to_lower_bound_bytes": 0,
+      "selected_policy": "interval_first_fit",
       "runtime_direct_exact": true,
       "runtime_eager_close": false,
-      "status": "nonconfirmatory_output"
+      "deterministic_placements": true,
+      "layout_valid": true,
+      "planner_median_ms": {
+        "always_both": 42.13717200036626,
+        "candidate_only": 30.25668999998743,
+        "conditional": 44.13931799990678,
+        "upstream_greedy": 11.826850000034028
+      }
     }
   ],
-  "regressions": 0,
-  "rows": 10,
-  "saved_bytes_total": 19455504,
-  "schema_version": 1,
-  "soft_budget_control_rows": 2,
-  "soft_budget_controls_running_candidate": 2,
-  "ties": 2,
-  "upstream_bytes_total": 156064272,
-  "weighted_gain_percent": 12.466340790671167,
-  "wins": 8
+  "failures": [],
+  "skipped_models": [],
+  "unsupported_cases": [],
+  "memory_regressions": [],
+  "nonconfirmatory_checks": [
+    {
+      "case": "wb2_tv_resnet152",
+      "status": "nonconfirmatory_output",
+      "runtime_direct_exact": true,
+      "runtime_eager_close": false
+    },
+    {
+      "case": "wb2_tv_wide_resnet101_2",
+      "status": "nonconfirmatory_output",
+      "runtime_direct_exact": true,
+      "runtime_eager_close": false
+    }
+  ]
 }

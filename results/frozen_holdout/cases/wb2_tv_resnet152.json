@@ -1,23 +1,23 @@
 {
-  "added_planner_ms": 150.55218600173248,
-  "base_commit": "c65ad53ad6861de3d9a76f31ddaf882a7115176f",
+  "added_planner_ms": 63.81058100032533,
+  "base_commit": "457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc",
   "baseline_bytes": 14614528,
   "byte_valid": true,
   "candidate_bytes": 9633792,
   "candidate_excess_bytes": 0,
   "candidate_no_larger": true,
-  "candidate_patch_sha256": "62ee481fe0e7eb54f0781a209eb00d79c68a1b478a540eab9a3b4bad45837eea",
-  "candidate_planner_fraction_of_pipeline": 0.012153811773582771,
+  "candidate_patch_sha256": "7ad25503ce5d048defd193be39ca08ce38d477f100c3b1d53ec3700d9a91241b",
+  "candidate_planner_fraction_of_pipeline": 0.006284629781054209,
   "case": "wb2_tv_resnet152",
   "category": "image classification",
   "change_bytes": -4980736,
   "conditional_two_strategy": {
     "allocation_count": 825,
     "deterministic_placements": true,
-    "edge_export_time_s": 11.327543371000502,
+    "edge_export_time_s": 11.02038514600008,
     "layout_valid": true,
     "lower_bound_bytes": 9633792,
-    "lowering_time_s": 2.9025367209978867,
+    "lowering_time_s": 2.694028709000122,
     "max_activation_bytes": 9633792,
     "method_buffer_sizes": {
       "forward": [
@@ -30,11 +30,17 @@
     },
     "overlap_density": 0.0069736692984775795,
     "overlap_pair_count": 923,
-    "planner_median_s": 0.1741172749971156,
-    "planner_p90_s": 0.17653827439498854,
+    "planner_median_s": 0.08673990100032825,
+    "planner_p90_s": 0.08712770200017986,
+    "planner_probe_median_s": {
+      "always_both": 0.08351962500000809,
+      "candidate_only": 0.06116290299996763,
+      "conditional": 0.0863658239995857,
+      "upstream_greedy": 0.022380872999747226
+    },
     "planning_units": [
       {
-        "actual_planner_time_s": 0.17791350900370162,
+        "actual_planner_time_s": 0.087169946999893,
         "alias_count": 0,
         "alias_fallback_exact": null,
         "allocation_count": 825,
@@ -75,21 +81,27 @@
         "peak_live_allocation_count": 3,
         "peak_live_bytes": 9633792,
         "plan_bytes": 9633792,
-        "planner_max_s": 0.1778726119955536,
-        "planner_median_s": 0.1741172749971156,
-        "planner_min_s": 0.1720486019985401,
-        "planner_p90_s": 0.17653827439498854,
+        "planner_max_s": 0.08714494600008038,
+        "planner_median_s": 0.08673990100032825,
+        "planner_min_s": 0.08648504699976911,
+        "planner_p90_s": 0.08712770200017986,
+        "planner_probe_median_s": {
+          "always_both": 0.08351962500000809,
+          "candidate_only": 0.06116290299996763,
+          "conditional": 0.0863658239995857,
+          "upstream_greedy": 0.022380872999747226
+        },
         "possible_pair_count": 132355,
         "primary_interval_count": 515,
         "repeat_count": 7,
         "repeat_times_s": [
-          0.17498511300073005,
-          0.17403945299884072,
-          0.17248423999990337,
-          0.1720486019985401,
-          0.1741172749971156,
-          0.17564871599461185,
-          0.1778726119955536
+          0.08711620600024617,
+          0.08714494600008038,
+          0.08680635099972278,
+          0.08657567800037214,
+          0.08648504699976911,
+          0.08673990100032825,
+          0.0866011879998041
         ],
         "selected_policy": "interval_first_fit"
       }
@@ -98,10 +110,10 @@
     "possible_pair_count": 132355,
     "primary_interval_count": 515,
     "program_bytes": 240422176,
-    "program_load_time_s": 2.102000144077465e-05,
-    "serialization_time_s": 0.09606533799524186,
+    "program_load_time_s": 1.8959999579237774e-05,
+    "serialization_time_s": 0.08749715999965701,
     "status": "planned",
-    "total_pipeline_time_s": 14.32614542999363
+    "total_pipeline_time_s": 13.80191101499986
   },
   "deterministic_placements": true,
   "dynamic_shapes": false,
@@ -121,7 +133,7 @@
   "family": "ResNet",
   "gain_fraction": 0.34080717488789236,
   "lower_bound_bytes": 9633792,
-  "planner_ratio": 7.3887807099403995,
+  "planner_ratio": 3.7829251369127914,
   "planner_repeats": 7,
   "replays": [
     {
@@ -175,10 +187,10 @@
   "upstream_greedy": {
     "allocation_count": 825,
     "deterministic_placements": true,
-    "edge_export_time_s": 11.629363697997178,
+    "edge_export_time_s": 11.378548327000317,
     "layout_valid": true,
     "lower_bound_bytes": 9633792,
-    "lowering_time_s": 2.711936854997475,
+    "lowering_time_s": 2.5831840520004334,
     "max_activation_bytes": 14614528,
     "method_buffer_sizes": {
       "forward": [
@@ -191,11 +203,12 @@
     },
     "overlap_density": 0.0069736692984775795,
     "overlap_pair_count": 923,
-    "planner_median_s": 0.02356508899538312,
-    "planner_p90_s": 0.02362726619903697,
+    "planner_median_s": 0.022929320000002917,
+    "planner_p90_s": 0.022986016999675486,
+    "planner_probe_median_s": null,
     "planning_units": [
       {
-        "actual_planner_time_s": 0.023015667997242417,
+        "actual_planner_time_s": 0.022397722999812686,
         "alias_count": 0,
         "alias_fallback_exact": null,
         "allocation_count": 825,
@@ -240,21 +253,22 @@
         "peak_live_allocation_count": 3,
         "peak_live_bytes": 9633792,
         "plan_bytes": 14614528,
-        "planner_max_s": 0.023695181997027248,
-        "planner_median_s": 0.02356508899538312,
-        "planner_min_s": 0.023392945993691683,
-        "planner_p90_s": 0.02362726619903697,
+        "planner_max_s": 0.023004400999525387,
+        "planner_median_s": 0.022929320000002917,
+        "planner_min_s": 0.022833319000710617,
+        "planner_p90_s": 0.022986016999675486,
+        "planner_probe_median_s": null,
         "possible_pair_count": 132355,
         "primary_interval_count": 515,
         "repeat_count": 7,
         "repeat_times_s": [
-          0.02353362800204195,
-          0.02344615600304678,
-          0.023695181997027248,
-          0.02356508899538312,
-          0.02357644899893785,
-          0.023392945993691683,
-          0.02358198900037678
+          0.022937789999559755,
+          0.023004400999525387,
+          0.02297376099977555,
+          0.022929320000002917,
+          0.02291250000052969,
+          0.022833319000710617,
+          0.022897439999724156
         ],
         "selected_policy": "greedy_tie_or_better"
       }
@@ -263,11 +277,11 @@
     "possible_pair_count": 132355,
     "primary_interval_count": 515,
     "program_bytes": 240423456,
-    "program_load_time_s": 2.064999716822058e-05,
-    "serialization_time_s": 0.09690063200105214,
+    "program_load_time_s": 2.0149999727436807e-05,
+    "serialization_time_s": 0.09035337200020876,
     "status": "planned",
-    "total_pipeline_time_s": 14.438201184995705
+    "total_pipeline_time_s": 14.05208575100096
   },
-  "wall_time_s": 118.91169368899864,
+  "wall_time_s": 114.05160740099927,
   "weights": "deterministic_synthetic"
 }

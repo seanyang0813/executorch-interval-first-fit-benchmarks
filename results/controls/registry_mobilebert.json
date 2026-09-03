@@ -1,23 +1,23 @@
 {
-  "added_planner_ms": 0.3369679998286301,
-  "base_commit": "fdae101f75b4d59075dd60117c84182e11aadf48",
+  "added_planner_ms": -3.7668739996661316,
+  "base_commit": "457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc",
   "baseline_bytes": 819328,
   "byte_valid": true,
   "candidate_bytes": 819328,
   "candidate_excess_bytes": 4096,
   "candidate_no_larger": true,
-  "candidate_patch_sha256": "477f961ab6a484d14cdfa4ab99f5042dc258c77df10c40d5fc73e8299d1f57ec",
-  "candidate_planner_fraction_of_pipeline": 0.004001455017190743,
+  "candidate_patch_sha256": "7ad25503ce5d048defd193be39ca08ce38d477f100c3b1d53ec3700d9a91241b",
+  "candidate_planner_fraction_of_pipeline": 0.004140250456808541,
   "case": "registry_mobilebert",
   "category": "transformer/NLP",
   "change_bytes": 0,
   "conditional_two_strategy": {
     "allocation_count": 2038,
     "deterministic_placements": true,
-    "edge_export_time_s": 32.32018792500003,
+    "edge_export_time_s": 30.166365735999534,
     "layout_valid": true,
     "lower_bound_bytes": 815232,
-    "lowering_time_s": 6.067643778000047,
+    "lowering_time_s": 5.583481828000004,
     "max_activation_bytes": 819328,
     "method_buffer_sizes": {
       "forward": [
@@ -30,11 +30,11 @@
     },
     "overlap_density": 0.004285295150606806,
     "overlap_pair_count": 8895,
-    "planner_median_s": 0.15378625999983342,
-    "planner_p90_s": 0.15589972640004818,
+    "planner_median_s": 0.14816509800039057,
+    "planner_p90_s": 0.1486220182001489,
     "planning_units": [
       {
-        "actual_planner_time_s": 0.14807180299999345,
+        "actual_planner_time_s": 0.14000486999975692,
         "alias_count": 0,
         "alias_fallback_exact": null,
         "allocation_count": 2038,
@@ -79,21 +79,21 @@
         "peak_live_allocation_count": 5,
         "peak_live_bytes": 815232,
         "plan_bytes": 819328,
-        "planner_max_s": 0.15695493800012628,
-        "planner_median_s": 0.15378625999983342,
-        "planner_min_s": 0.1488438930000484,
-        "planner_p90_s": 0.15589972640004818,
+        "planner_max_s": 0.1487463880002906,
+        "planner_median_s": 0.14816509800039057,
+        "planner_min_s": 0.14465566299986676,
+        "planner_p90_s": 0.1486220182001489,
         "possible_pair_count": 2075703,
         "primary_interval_count": 2038,
         "repeat_count": 7,
         "repeat_times_s": [
-          0.1488438930000484,
-          0.15280455500010248,
-          0.15284457600000678,
-          0.1551962519999961,
-          0.15378625999983342,
-          0.1542437670000254,
-          0.15695493800012628
+          0.14465566299986676,
+          0.14652734300034354,
+          0.14729002500007482,
+          0.1485391050000544,
+          0.14816976899965084,
+          0.1487463880002906,
+          0.14816509800039057
         ],
         "selected_policy": "greedy_tie_or_better"
       }
@@ -102,10 +102,10 @@
     "possible_pair_count": 2075703,
     "primary_interval_count": 2038,
     "program_bytes": 98836608,
-    "program_load_time_s": 2.4539999913031352e-05,
-    "serialization_time_s": 0.04475327899990589,
+    "program_load_time_s": 1.9809999685094226e-05,
+    "serialization_time_s": 0.036658480999903986,
     "status": "planned",
-    "total_pipeline_time_s": 38.43258498199998
+    "total_pipeline_time_s": 35.78650604499944
   },
   "deterministic_placements": true,
   "dynamic_shapes": false,
@@ -123,7 +123,7 @@
   "family": "MobileBERT",
   "gain_fraction": 0.0,
   "lower_bound_bytes": 815232,
-  "planner_ratio": 1.0021959566931635,
+  "planner_ratio": 0.9752068379678194,
   "planner_repeats": 7,
   "replays": [
     {
@@ -175,10 +175,10 @@
   "upstream_greedy": {
     "allocation_count": 2038,
     "deterministic_placements": true,
-    "edge_export_time_s": 31.338887806999992,
+    "edge_export_time_s": 30.38349610000023,
     "layout_valid": true,
     "lower_bound_bytes": 815232,
-    "lowering_time_s": 5.9829654170000595,
+    "lowering_time_s": 5.7340707879993715,
     "max_activation_bytes": 819328,
     "method_buffer_sizes": {
       "forward": [
@@ -191,11 +191,11 @@
     },
     "overlap_density": 0.004285295150606806,
     "overlap_pair_count": 8895,
-    "planner_median_s": 0.1534492920000048,
-    "planner_p90_s": 0.2763949048000087,
+    "planner_median_s": 0.1519319720000567,
+    "planner_p90_s": 0.2649439228003758,
     "planning_units": [
       {
-        "actual_planner_time_s": 0.15525116100002379,
+        "actual_planner_time_s": 0.153734624000208,
         "alias_count": 0,
         "alias_fallback_exact": null,
         "allocation_count": 2038,
@@ -240,21 +240,21 @@
         "peak_live_allocation_count": 5,
         "peak_live_bytes": 815232,
         "plan_bytes": 819328,
-        "planner_max_s": 0.4600152220000382,
-        "planner_median_s": 0.1534492920000048,
-        "planner_min_s": 0.15129734900006042,
-        "planner_p90_s": 0.2763949048000087,
+        "planner_max_s": 0.4338271900005566,
+        "planner_median_s": 0.1519319720000567,
+        "planner_min_s": 0.14972852600021724,
+        "planner_p90_s": 0.2649439228003758,
         "possible_pair_count": 2075703,
         "primary_interval_count": 2038,
         "repeat_count": 7,
         "repeat_times_s": [
-          0.15129734900006042,
-          0.15188939800009393,
-          0.15319904800003314,
-          0.4600152220000382,
-          0.1534492920000048,
-          0.15373313700001745,
-          0.15398135999998885
+          0.14972852600021724,
+          0.15168625800015434,
+          0.15172977999918658,
+          0.4338271900005566,
+          0.1519319720000567,
+          0.15235507800025516,
+          0.15220992600006866
         ],
         "selected_policy": "greedy_tie_or_better"
       }
@@ -263,11 +263,11 @@
     "possible_pair_count": 2075703,
     "primary_interval_count": 2038,
     "program_bytes": 98836608,
-    "program_load_time_s": 2.3749999854771886e-05,
-    "serialization_time_s": 0.03886761299986574,
+    "program_load_time_s": 2.0399999812070746e-05,
+    "serialization_time_s": 0.03806662199986022,
     "status": "planned",
-    "total_pipeline_time_s": 37.36072083699992
+    "total_pipeline_time_s": 36.15563350999946
   },
-  "wall_time_s": 83.96752670199999,
+  "wall_time_s": 78.92164151399993,
   "weights": "registry_default"
 }

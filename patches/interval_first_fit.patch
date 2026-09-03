@@ -1,34 +1,64 @@
 diff --git a/exir/memory_planning.py b/exir/memory_planning.py
-index 44b5358545..655a1b9887 100644
+index 44b5358545..24f3f591a1 100644
 --- a/exir/memory_planning.py
 +++ b/exir/memory_planning.py
-@@ -1149,6 +1149,253 @@ def greedy(
+@@ -1082,7 +1082,7 @@ def _compute_total_sizes(
+ 
+ def greedy(
+     alignment: int,
+-    specs: Set[TensorSpec],
++    specs: Iterable[TensorSpec],
+     graph_module: torch.fx.GraphModule,
+     graph_signature: ExportGraphSignature,
+     extra_padding: int = 0,
+@@ -1093,7 +1093,7 @@ def greedy(
+ 
+     Args:
+         alignment: Memory alignment requirement
+-        specs: Set of TensorSpec objects with updated lifetimes
++        specs: Iterable of TensorSpec objects with updated lifetimes
+         graph_module: Graph module
+         graph_signature: Graph signature
+         extra_padding: Additional padding to add to each memory buffer (in bytes)
+@@ -1149,6 +1149,265 @@ def greedy(
      return greedy_result
  
  
 +def _stable_spec_order(
 +    specs: Set[TensorSpec],
 +    graph_module: torch.fx.GraphModule,
-+    graph_signature: ExportGraphSignature,
 +) -> Dict[TensorSpec, int]:
-+    ordered_specs = collect_specs_from_nodes(
-+        graph_module.graph.nodes,
-+        graph_signature,
-+        ignore_graph_input=False,
-+        ignore_graph_output=False,
-+        ignore_mutable_buffers=False,
-+        ignore_const=False,
-+        ignore_out_var_node=False,
-+        dedup=True,
-+        do_assertion=False,
-+        ignore_dynamic_unbound_tensor=False,
-+    )
-+    order = {spec: index for index, spec in enumerate(ordered_specs) if spec in specs}
++    order: Dict[TensorSpec, int] = {}
++    for node in graph_module.graph.nodes:
++        node_specs, _ = tree_flatten(get_node_tensor_specs(node))
++        for spec in node_specs:
++            if isinstance(spec, TensorSpec) and spec in specs and spec not in order:
++                order[spec] = len(order)
 +    internal_assert(
 +        len(order) == len(specs),
 +        "Every planned TensorSpec must occur in graph order.",
 +    )
 +    return order
++
++
++def _stable_greedy_specs(
++    specs: Set[TensorSpec], graph_module: torch.fx.GraphModule
++) -> List[TensorSpec]:
++    keys = {
++        spec: (
++            spec.allocated_memory,
++            cast(int, spec.lifetime[0]),
++            cast(int, spec.lifetime[1]),
++            cast(int, spec.mem_id) if spec.mem_id is not None else 1,
++        )
++        for spec in specs
++    }
++    ordered_specs = sorted(specs, key=keys.__getitem__)
++    if len(set(keys.values())) == len(specs):
++        return ordered_specs
++
++    order = _stable_spec_order(specs, graph_module)
++    return sorted(specs, key=lambda spec: (keys[spec], order[spec]))
 +
 +
 +def _arena_base_offsets(
@@ -71,7 +101,7 @@ index 44b5358545..655a1b9887 100644
 +    if not specs:
 +        return MemoryAlgoResult({}, [0, 0])
 +
-+    order = _stable_spec_order(specs, graph_module, graph_signature)
++    order = _stable_spec_order(specs, graph_module)
 +    sorted_specs = sorted(
 +        specs,
 +        key=lambda spec: (
@@ -213,7 +243,7 @@ index 44b5358545..655a1b9887 100644
 +
 +    greedy_result = greedy(
 +        alignment,
-+        specs,
++        _stable_greedy_specs(specs, graph_module),
 +        graph_module,
 +        graph_signature,
 +        extra_padding,
@@ -257,7 +287,7 @@ index 44b5358545..655a1b9887 100644
      def __init__(
          self,
 diff --git a/exir/tests/test_memory_planning.py b/exir/tests/test_memory_planning.py
-index 37bc088cfc..21461d5ac9 100644
+index 37bc088cfc..0575b57918 100644
 --- a/exir/tests/test_memory_planning.py
 +++ b/exir/tests/test_memory_planning.py
 @@ -9,7 +9,8 @@
@@ -265,7 +295,7 @@ index 37bc088cfc..21461d5ac9 100644
  import itertools
  import unittest
 -from typing import Any, Callable, cast, List, Optional, Tuple, Type
-+from typing import Any, Callable, cast, List, Optional, Set, Tuple, Type
++from typing import Any, Callable, cast, Iterator, List, Optional, Set, Tuple, Type
 +from unittest.mock import patch
  
  import executorch.exir as exir
@@ -285,7 +315,7 @@ index 37bc088cfc..21461d5ac9 100644
      MemoryAlgoResult,
      MemoryPlanningAlgorithmSuite,
      naive,
-@@ -79,6 +83,318 @@ from torch.nn import functional as F
+@@ -79,6 +83,327 @@ from torch.nn import functional as F
  from torch.utils import _pytree as pytree
  
  
@@ -447,7 +477,15 @@ index 37bc088cfc..21461d5ac9 100644
 +        candidate.assert_not_called()
 +        self.assertEqual(conditional_result.bufsizes, lower_bound)
 +
-+    def test_conditional_is_deterministic_for_ties(self) -> None:
++    def test_conditional_lower_bound_tie_is_stable_across_set_orders(self) -> None:
++        class IterationOrderedSet(set[TensorSpec]):
++            def __init__(self, ordered_specs: List[TensorSpec]) -> None:
++                self._ordered_specs = ordered_specs
++                super().__init__(ordered_specs)
++
++            def __iter__(self) -> Iterator[TensorSpec]:
++                return iter(self._ordered_specs)
++
 +        specs = [
 +            self._spec(32, [0, 1]),
 +            self._spec(32, [0, 1]),
@@ -455,20 +493,21 @@ index 37bc088cfc..21461d5ac9 100644
 +        ]
 +        graph_module = self._graph_module(specs)
 +
-+        spec_set = set(specs)
-+        first = greedy_interval_first_fit_conditional(
-+            16,
-+            spec_set,
-+            graph_module,
-+            cast(ExportGraphSignature, None),
-+        )
-+        second = greedy_interval_first_fit_conditional(
-+            16,
-+            spec_set,
-+            graph_module,
-+            cast(ExportGraphSignature, None),
-+        )
++        with patch("executorch.exir.memory_planning.interval_first_fit") as candidate:
++            first = greedy_interval_first_fit_conditional(
++                16,
++                IterationOrderedSet(specs),
++                graph_module,
++                cast(ExportGraphSignature, None),
++            )
++            second = greedy_interval_first_fit_conditional(
++                16,
++                IterationOrderedSet(list(reversed(specs))),
++                graph_module,
++                cast(ExportGraphSignature, None),
++            )
 +
++        candidate.assert_not_called()
 +        self.assertEqual(first.bufsizes, second.bufsizes)
 +        self.assertEqual(
 +            [first.spec_dict[spec].mem_offset for spec in specs],
