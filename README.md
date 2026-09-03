@@ -12,6 +12,8 @@ The benchmark pin is ExecuTorch commit 457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc.
 
 ## Results
 
+See [the full model-by-model index](RESULTS.md) for every frozen holdout row, controls, and exact-final provenance.
+
 ### Exact submitted-commit confirmations
 
 | Model | Upstream greedy | Portfolio result | Gain | Added planner time | Runtime replay |

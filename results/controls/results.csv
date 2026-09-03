@@ -1,0 +1,5 @@
+"case","status","baseline_bytes","candidate_bytes","gain_percent","added_planner_ms","runtime_direct_exact","runtime_eager_close"
+"registry_emformer_predict","ok",5513216,5513216,0,25.542759000018123,true,true
+"registry_emformer_predict","ok",5513216,5513216,0,233.74189800017575,true,true
+"registry_mobilebert","nonconfirmatory_output",819328,819328,0,0.3369679998286301,true,false
+"wb2_tv_resnet34","ok",6422528,6422528,0,-0.02764199996363459,true,true
