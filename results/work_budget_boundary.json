@@ -1,0 +1,118 @@
+{
+  "all_candidate_no_larger": true,
+  "all_decisions_correct": true,
+  "base_commit": "c65ad53ad6861de3d9a76f31ddaf882a7115176f",
+  "planner_source_sha256": "80aea49caeb56d2c8da4854a3d350f8276ce3500f5626a577e3e17f1eefdf90d",
+  "repeats": 3,
+  "rows": [
+    {
+      "candidate_calls": 3,
+      "candidate_no_larger": true,
+      "decision_correct": true,
+      "expected_candidate_calls": 3,
+      "guarded_bytes": 112,
+      "guarded_median_ms": 523.2390139999552,
+      "guarded_samples_s": [
+        0.5135272489997078,
+        0.5236829519999446,
+        0.5232390139999552
+      ],
+      "interval_count": 2000,
+      "pair_scan_estimate": 1999000,
+      "potential_savings_percent": 22.22222222222222,
+      "scenario": "below_soft_material",
+      "upstream_bytes": 144
+    },
+    {
+      "candidate_calls": 3,
+      "candidate_no_larger": true,
+      "decision_correct": true,
+      "expected_candidate_calls": 3,
+      "guarded_bytes": 112,
+      "guarded_median_ms": 534.039890999793,
+      "guarded_samples_s": [
+        0.6350028860001657,
+        0.5182841939999889,
+        0.534039890999793
+      ],
+      "interval_count": 2001,
+      "pair_scan_estimate": 2001000,
+      "potential_savings_percent": 22.22222222222222,
+      "scenario": "above_soft_material",
+      "upstream_bytes": 144
+    },
+    {
+      "candidate_calls": 0,
+      "candidate_no_larger": true,
+      "decision_correct": true,
+      "expected_candidate_calls": 0,
+      "guarded_bytes": 4240,
+      "guarded_median_ms": 216.30901100024857,
+      "guarded_samples_s": [
+        0.21419573799994396,
+        0.21630901100024857,
+        0.2204312270000628
+      ],
+      "interval_count": 2001,
+      "pair_scan_estimate": 2001000,
+      "potential_savings_percent": 0.7547169811320755,
+      "scenario": "above_soft_low_potential",
+      "upstream_bytes": 4240
+    },
+    {
+      "candidate_calls": 3,
+      "candidate_no_larger": true,
+      "decision_correct": true,
+      "expected_candidate_calls": 3,
+      "guarded_bytes": 112,
+      "guarded_median_ms": 1284.9114360001295,
+      "guarded_samples_s": [
+        1.273963700999957,
+        1.2849114360001295,
+        1.2864419540001109
+      ],
+      "interval_count": 3162,
+      "pair_scan_estimate": 4997541,
+      "potential_savings_percent": 22.22222222222222,
+      "scenario": "below_hard_material",
+      "upstream_bytes": 144
+    },
+    {
+      "candidate_calls": 0,
+      "candidate_no_larger": true,
+      "decision_correct": true,
+      "expected_candidate_calls": 0,
+      "guarded_bytes": 144,
+      "guarded_median_ms": 563.065911999729,
+      "guarded_samples_s": [
+        0.5585827989998506,
+        0.563065911999729,
+        0.5880192380000153
+      ],
+      "interval_count": 3163,
+      "pair_scan_estimate": 5000703,
+      "potential_savings_percent": 22.22222222222222,
+      "scenario": "above_hard_material",
+      "upstream_bytes": 144
+    },
+    {
+      "candidate_calls": 0,
+      "candidate_no_larger": true,
+      "decision_correct": true,
+      "expected_candidate_calls": 0,
+      "guarded_bytes": 144,
+      "guarded_median_ms": 3565.9592460001477,
+      "guarded_samples_s": [
+        3.475748423999903,
+        3.5659592460001477,
+        3.5881130430002486
+      ],
+      "interval_count": 8000,
+      "pair_scan_estimate": 31996000,
+      "potential_savings_percent": 22.22222222222222,
+      "scenario": "far_above_hard_material",
+      "upstream_bytes": 144
+    }
+  ],
+  "schema_version": 1
+}

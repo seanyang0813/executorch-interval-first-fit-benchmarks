@@ -1,0 +1,52 @@
+{
+  "alias_cases": 1000,
+  "alignments": {
+    "1": 1250,
+    "128": 1250,
+    "16": 1250,
+    "2": 1250,
+    "32": 1250,
+    "4": 1250,
+    "64": 1250,
+    "8": 1250
+  },
+  "base_commit": "457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc",
+  "deterministic_regressions_added": [
+    {
+      "defect": "Pinned upstream greedy can violate its decreasing-size invariant when target alignment differs from TensorSpec alignment.",
+      "fix": "Normalize specs inside the opt-in wrapper before invoking unchanged upstream greedy.",
+      "test": "TestIntervalFirstFitMemoryPlanning.test_conditional_returns_upstream_on_lower_bound_tie"
+    }
+  ],
+  "evidence_boundary": "Randomized bug-finding evidence, not a proof. The master seed and up to twenty complete counterexamples are retained.",
+  "executed_cases": 10000,
+  "failure_count": 0,
+  "failures": [],
+  "master_seed": 3888128038,
+  "mechanical_checks": [
+    "simultaneously live primary allocations do not overlap",
+    "primary offsets satisfy target alignment",
+    "all allocations fit reported arenas",
+    "spatially overlapping allocations share a memory object ID",
+    "identical input produces identical placement",
+    "candidate plan is no larger than upstream",
+    "sound per-arena lower bound does not exceed either valid plan",
+    "storage-backed aliases exactly fall back to upstream on the same input",
+    "allocation-order permutations independently preserve all invariants"
+  ],
+  "passed": true,
+  "patterns": {
+    "boundary_inclusive": 1666,
+    "disjoint_lifetimes": 1667,
+    "equal_lifetimes": 1667,
+    "high_overlap": 1667,
+    "nested_lifetimes": 1667,
+    "sparse_overlap": 1666
+  },
+  "planner_source": "exir/memory_planning.py",
+  "planner_source_sha256": "80aea49caeb56d2c8da4854a3d350f8276ce3500f5626a577e3e17f1eefdf90d",
+  "requested_cases": 10000,
+  "schema_version": 1,
+  "wall_time_s": 113.73008753300019,
+  "published_note": "Machine-local planner path normalized; measurements unchanged."
+}

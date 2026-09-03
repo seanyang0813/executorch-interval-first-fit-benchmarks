@@ -1,0 +1,15 @@
+{
+  "byte_valid_rows": 51,
+  "candidate_bytes_total": 3353515712,
+  "lost_savings_vs_unbudgeted_bytes": 1935360,
+  "lost_wins_vs_unbudgeted": 4,
+  "material_wins_lost": 0,
+  "regressions": 0,
+  "rows": 56,
+  "saved_bytes_total": 43690864,
+  "skipped_candidate_rows": 7,
+  "ties": 30,
+  "upstream_bytes_total": 3397206576,
+  "weighted_gain_percent": 1.2860820507254311,
+  "wins": 21
+}

@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "frozen_before_execution": true,
+  "pinned_upstream": "457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc",
+  "clean_patch_sha256": "ec89e2d63bcbbb4617fc3119c56cec35feb0e3182dbf609bc98e59008779f42a",
+  "selection_rationale": "One lower-bound tie, one ordinary below-soft material win, one above-soft material win, and both prior planner-tail blockers.",
+  "holdout_cases": [
+    {
+      "case": "wb2_tv_resnet34",
+      "expected_upstream_bytes": 6422528,
+      "expected_candidate_bytes": 6422528,
+      "maximum_added_planner_ms": 1000
+    },
+    {
+      "case": "wb2_tv_regnet_y_3_2gf",
+      "expected_upstream_bytes": 9660672,
+      "expected_candidate_bytes": 8128512,
+      "maximum_added_planner_ms": 1000
+    },
+    {
+      "case": "wb2_tv_swin_v2_s_256",
+      "expected_upstream_bytes": 18087952,
+      "expected_candidate_bytes": 14155776,
+      "maximum_added_planner_ms": 1000
+    }
+  ],
+  "blocker_cases": [
+    {
+      "case": "registry_emformer_predict",
+      "expected_upstream_bytes": 5513216,
+      "expected_candidate_bytes": 5513216,
+      "maximum_added_planner_ms": 100
+    },
+    {
+      "case": "registry_mobilebert",
+      "expected_upstream_bytes": 819328,
+      "expected_candidate_bytes": 819328,
+      "maximum_added_planner_ms": 100
+    }
+  ],
+  "common_gates": {
+    "byte_values_match_reference": true,
+    "candidate_never_larger": true,
+    "runtime_direct_exact": true,
+    "deterministic_placements": true
+  }
+}

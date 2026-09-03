@@ -1,0 +1,277 @@
+{
+  "added_planner_ms": 247.44247799389996,
+  "base_commit": "c65ad53ad6861de3d9a76f31ddaf882a7115176f",
+  "baseline_bytes": 8732672,
+  "byte_valid": true,
+  "candidate_bytes": 8429568,
+  "candidate_excess_bytes": 602112,
+  "candidate_no_larger": true,
+  "candidate_patch_sha256": "62ee481fe0e7eb54f0781a209eb00d79c68a1b478a540eab9a3b4bad45837eea",
+  "candidate_planner_fraction_of_pipeline": 0.011766253794768063,
+  "case": "wb2_tv_efficientnet_v2_m",
+  "category": "image classification",
+  "change_bytes": -303104,
+  "conditional_two_strategy": {
+    "allocation_count": 1195,
+    "deterministic_placements": true,
+    "edge_export_time_s": 20.94854004399531,
+    "layout_valid": true,
+    "lower_bound_bytes": 7827456,
+    "lowering_time_s": 3.6887267579950276,
+    "max_activation_bytes": 8429568,
+    "method_buffer_sizes": {
+      "forward": [
+        0,
+        8429568
+      ]
+    },
+    "method_bytes": {
+      "forward": 8429568
+    },
+    "overlap_density": 0.005239397379011454,
+    "overlap_pair_count": 2031,
+    "planner_median_s": 0.2908645200004685,
+    "planner_p90_s": 0.2915735372007475,
+    "planning_units": [
+      {
+        "actual_planner_time_s": 0.2920225330017274,
+        "alias_count": 0,
+        "alias_fallback_exact": null,
+        "allocation_count": 1195,
+        "arenas": [
+          {
+            "allocation_count": 881,
+            "arena_bytes": 8429568,
+            "base_offset": 0,
+            "holes_at_peak_bytes": 602112,
+            "holes_at_peak_count": 1,
+            "internal_holes_at_peak_bytes": 0,
+            "leading_hole_at_peak_bytes": 0,
+            "live_ranges_at_peak_sample": [
+              [
+                0,
+                7827456
+              ]
+            ],
+            "mem_id": 1,
+            "peak_live_bytes": 7827456,
+            "peak_live_count": 4,
+            "peak_live_time": 1041,
+            "trailing_hole_at_peak_bytes": 602112
+          }
+        ],
+        "deterministic_placements": true,
+        "gap_to_lower_bound_bytes": 602112,
+        "independent_greedy_bytes": 8732672,
+        "layout_failures": [],
+        "layout_valid": true,
+        "lower_bound_bufsizes": [
+          0,
+          7827456
+        ],
+        "lower_bound_bytes": 7827456,
+        "overlap_density": 0.005239397379011454,
+        "overlap_pair_count": 2031,
+        "peak_live_allocation_count": 4,
+        "peak_live_bytes": 7827456,
+        "plan_bytes": 8429568,
+        "planner_max_s": 0.29170802300359355,
+        "planner_median_s": 0.2908645200004685,
+        "planner_min_s": 0.289998034000746,
+        "planner_p90_s": 0.2915735372007475,
+        "possible_pair_count": 387640,
+        "primary_interval_count": 881,
+        "repeat_count": 7,
+        "repeat_times_s": [
+          0.2904433040021104,
+          0.2908645200004685,
+          0.289998034000746,
+          0.29148387999885017,
+          0.29170802300359355,
+          0.2911936640011845,
+          0.29047784099384444
+        ],
+        "selected_policy": "interval_first_fit"
+      }
+    ],
+    "policy": "conditional_two_strategy",
+    "possible_pair_count": 387640,
+    "primary_interval_count": 881,
+    "program_bytes": 215534416,
+    "program_load_time_s": 2.1530999219976366e-05,
+    "serialization_time_s": 0.08296489399799611,
+    "status": "planned",
+    "total_pipeline_time_s": 24.720231695988332
+  },
+  "deterministic_placements": true,
+  "dynamic_shapes": false,
+  "eager_output_finite": true,
+  "example_inputs": [
+    {
+      "device": "cpu",
+      "dtype": "torch.float32",
+      "shape": [
+        1,
+        3,
+        224,
+        224
+      ]
+    }
+  ],
+  "family": "EfficientNetV2",
+  "gain_fraction": 0.03470919324577861,
+  "lower_bound_bytes": 7827456,
+  "planner_ratio": 6.698545405959235,
+  "planner_repeats": 7,
+  "replays": [
+    {
+      "baseline_finite": true,
+      "baseline_vs_candidate": {
+        "close": true,
+        "exact": true,
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0
+      },
+      "baseline_vs_eager": {
+        "close": true,
+        "exact": false,
+        "max_abs_error": 8.526512829121202e-14,
+        "max_rel_error": 0.000158325070515275
+      },
+      "candidate_finite": true,
+      "candidate_repeat": {
+        "close": true,
+        "exact": true,
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0
+      },
+      "candidate_vs_eager": {
+        "close": true,
+        "exact": false,
+        "max_abs_error": 8.526512829121202e-14,
+        "max_rel_error": 0.000158325070515275
+      },
+      "eager_finite": true,
+      "inputs": [
+        {
+          "device": "cpu",
+          "dtype": "torch.float32",
+          "shape": [
+            1,
+            3,
+            224,
+            224
+          ]
+        }
+      ]
+    }
+  ],
+  "runtime_direct_exact": true,
+  "runtime_eager_close": true,
+  "schema_version": 1,
+  "seed": 4148302614,
+  "status": "ok",
+  "upstream_excess_bytes": 905216,
+  "upstream_greedy": {
+    "allocation_count": 1195,
+    "deterministic_placements": true,
+    "edge_export_time_s": 20.540198321999924,
+    "layout_valid": true,
+    "lower_bound_bytes": 7827456,
+    "lowering_time_s": 3.8117303649996757,
+    "max_activation_bytes": 8732672,
+    "method_buffer_sizes": {
+      "forward": [
+        0,
+        8732672
+      ]
+    },
+    "method_bytes": {
+      "forward": 8732672
+    },
+    "overlap_density": 0.005239397379011454,
+    "overlap_pair_count": 2031,
+    "planner_median_s": 0.04342204200656852,
+    "planner_p90_s": 0.043950626600417306,
+    "planning_units": [
+      {
+        "actual_planner_time_s": 0.0419975870026974,
+        "alias_count": 0,
+        "alias_fallback_exact": null,
+        "allocation_count": 1195,
+        "arenas": [
+          {
+            "allocation_count": 881,
+            "arena_bytes": 8732672,
+            "base_offset": 0,
+            "holes_at_peak_bytes": 905216,
+            "holes_at_peak_count": 2,
+            "internal_holes_at_peak_bytes": 905216,
+            "leading_hole_at_peak_bytes": 0,
+            "live_ranges_at_peak_sample": [
+              [
+                0,
+                4816896
+              ],
+              [
+                5120000,
+                7528448
+              ],
+              [
+                8130560,
+                8732672
+              ]
+            ],
+            "mem_id": 1,
+            "peak_live_bytes": 7827456,
+            "peak_live_count": 4,
+            "peak_live_time": 1041,
+            "trailing_hole_at_peak_bytes": 0
+          }
+        ],
+        "deterministic_placements": true,
+        "gap_to_lower_bound_bytes": 905216,
+        "independent_greedy_bytes": 8732672,
+        "layout_failures": [],
+        "layout_valid": true,
+        "lower_bound_bufsizes": [
+          0,
+          7827456
+        ],
+        "lower_bound_bytes": 7827456,
+        "overlap_density": 0.005239397379011454,
+        "overlap_pair_count": 2031,
+        "peak_live_allocation_count": 4,
+        "peak_live_bytes": 7827456,
+        "plan_bytes": 8732672,
+        "planner_max_s": 0.04425404599896865,
+        "planner_median_s": 0.04342204200656852,
+        "planner_min_s": 0.04274011899542529,
+        "planner_p90_s": 0.043950626600417306,
+        "possible_pair_count": 387640,
+        "primary_interval_count": 881,
+        "repeat_count": 7,
+        "repeat_times_s": [
+          0.042938112004776485,
+          0.04425404599896865,
+          0.04342204200656852,
+          0.043071654996310826,
+          0.04374834700138308,
+          0.04274011899542529,
+          0.04355844399833586
+        ],
+        "selected_policy": "greedy_tie_or_better"
+      }
+    ],
+    "policy": "upstream_greedy",
+    "possible_pair_count": 387640,
+    "primary_interval_count": 881,
+    "program_bytes": 215536080,
+    "program_load_time_s": 2.134099486283958e-05,
+    "serialization_time_s": 0.08256525699835038,
+    "status": "planned",
+    "total_pipeline_time_s": 24.43449394399795
+  },
+  "wall_time_s": 93.71181914699991,
+  "weights": "deterministic_synthetic"
+}

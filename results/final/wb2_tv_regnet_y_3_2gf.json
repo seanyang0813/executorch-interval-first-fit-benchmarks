@@ -1,0 +1,273 @@
+{
+  "added_planner_ms": 46.922730000005686,
+  "base_commit": "c65ad53ad6861de3d9a76f31ddaf882a7115176f",
+  "baseline_bytes": 9660672,
+  "byte_valid": true,
+  "candidate_bytes": 8128512,
+  "candidate_excess_bytes": 0,
+  "candidate_no_larger": true,
+  "candidate_patch_sha256": "62ee481fe0e7eb54f0781a209eb00d79c68a1b478a540eab9a3b4bad45837eea",
+  "candidate_planner_fraction_of_pipeline": 0.005418195583531174,
+  "case": "wb2_tv_regnet_y_3_2gf",
+  "category": "image classification",
+  "change_bytes": -1532160,
+  "conditional_two_strategy": {
+    "allocation_count": 485,
+    "deterministic_placements": true,
+    "edge_export_time_s": 9.330609877999905,
+    "layout_valid": true,
+    "lower_bound_bytes": 8128512,
+    "lowering_time_s": 1.1894592360004026,
+    "max_activation_bytes": 8128512,
+    "method_buffer_sizes": {
+      "forward": [
+        0,
+        8128512
+      ]
+    },
+    "method_bytes": {
+      "forward": 8128512
+    },
+    "overlap_density": 0.012432895300200902,
+    "overlap_pair_count": 755,
+    "planner_median_s": 0.05717930399987381,
+    "planner_p90_s": 0.05860386339973047,
+    "planning_units": [
+      {
+        "actual_planner_time_s": 0.0580670470003497,
+        "alias_count": 0,
+        "alias_fallback_exact": null,
+        "allocation_count": 485,
+        "arenas": [
+          {
+            "allocation_count": 349,
+            "arena_bytes": 8128512,
+            "base_offset": 0,
+            "holes_at_peak_bytes": 0,
+            "holes_at_peak_count": 0,
+            "internal_holes_at_peak_bytes": 0,
+            "leading_hole_at_peak_bytes": 0,
+            "live_ranges_at_peak_sample": [
+              [
+                0,
+                8128512
+              ]
+            ],
+            "mem_id": 1,
+            "peak_live_bytes": 8128512,
+            "peak_live_count": 3,
+            "peak_live_time": 445,
+            "trailing_hole_at_peak_bytes": 0
+          }
+        ],
+        "deterministic_placements": true,
+        "gap_to_lower_bound_bytes": 0,
+        "independent_greedy_bytes": 9660672,
+        "layout_failures": [],
+        "layout_valid": true,
+        "lower_bound_bufsizes": [
+          0,
+          8128512
+        ],
+        "lower_bound_bytes": 8128512,
+        "overlap_density": 0.012432895300200902,
+        "overlap_pair_count": 755,
+        "peak_live_allocation_count": 3,
+        "peak_live_bytes": 8128512,
+        "plan_bytes": 8128512,
+        "planner_max_s": 0.0587121879998449,
+        "planner_median_s": 0.05717930399987381,
+        "planner_min_s": 0.05671901400000934,
+        "planner_p90_s": 0.05860386339973047,
+        "possible_pair_count": 60726,
+        "primary_interval_count": 349,
+        "repeat_count": 7,
+        "repeat_times_s": [
+          0.058531646999654185,
+          0.05717930399987381,
+          0.0587121879998449,
+          0.057650375999855896,
+          0.05697036399988065,
+          0.05671901400000934,
+          0.05692738500010819
+        ],
+        "selected_policy": "interval_first_fit"
+      }
+    ],
+    "policy": "conditional_two_strategy",
+    "possible_pair_count": 60726,
+    "primary_interval_count": 349,
+    "program_bytes": 77643008,
+    "program_load_time_s": 2.0421000044734683e-05,
+    "serialization_time_s": 0.03313132299990684,
+    "status": "planned",
+    "total_pipeline_time_s": 10.553200437000214
+  },
+  "deterministic_placements": true,
+  "dynamic_shapes": false,
+  "eager_output_finite": true,
+  "example_inputs": [
+    {
+      "device": "cpu",
+      "dtype": "torch.float32",
+      "shape": [
+        1,
+        3,
+        224,
+        224
+      ]
+    }
+  ],
+  "family": "RegNet",
+  "gain_fraction": 0.15859766277128548,
+  "lower_bound_bytes": 8128512,
+  "planner_ratio": 5.574893136890448,
+  "planner_repeats": 7,
+  "replays": [
+    {
+      "baseline_finite": true,
+      "baseline_vs_candidate": {
+        "close": true,
+        "exact": true,
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0
+      },
+      "baseline_vs_eager": {
+        "close": true,
+        "exact": false,
+        "max_abs_error": 1.1920928955078125e-07,
+        "max_rel_error": 9.924334881361574e-05
+      },
+      "candidate_finite": true,
+      "candidate_repeat": {
+        "close": true,
+        "exact": true,
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0
+      },
+      "candidate_vs_eager": {
+        "close": true,
+        "exact": false,
+        "max_abs_error": 1.1920928955078125e-07,
+        "max_rel_error": 9.924334881361574e-05
+      },
+      "eager_finite": true,
+      "inputs": [
+        {
+          "device": "cpu",
+          "dtype": "torch.float32",
+          "shape": [
+            1,
+            3,
+            224,
+            224
+          ]
+        }
+      ]
+    }
+  ],
+  "runtime_direct_exact": true,
+  "runtime_eager_close": true,
+  "schema_version": 1,
+  "seed": 78945103,
+  "status": "ok",
+  "upstream_excess_bytes": 1532160,
+  "upstream_greedy": {
+    "allocation_count": 485,
+    "deterministic_placements": true,
+    "edge_export_time_s": 9.563573137000276,
+    "layout_valid": true,
+    "lower_bound_bytes": 8128512,
+    "lowering_time_s": 1.1266681289998814,
+    "max_activation_bytes": 9660672,
+    "method_buffer_sizes": {
+      "forward": [
+        0,
+        9660672
+      ]
+    },
+    "method_bytes": {
+      "forward": 9660672
+    },
+    "overlap_density": 0.012432895300200902,
+    "overlap_pair_count": 755,
+    "planner_median_s": 0.010256573999868124,
+    "planner_p90_s": 0.010452173999965453,
+    "planning_units": [
+      {
+        "actual_planner_time_s": 0.01043024399996284,
+        "alias_count": 0,
+        "alias_fallback_exact": null,
+        "allocation_count": 485,
+        "arenas": [
+          {
+            "allocation_count": 349,
+            "arena_bytes": 9660672,
+            "base_offset": 0,
+            "holes_at_peak_bytes": 1532160,
+            "holes_at_peak_count": 1,
+            "internal_holes_at_peak_bytes": 1532160,
+            "leading_hole_at_peak_bytes": 0,
+            "live_ranges_at_peak_sample": [
+              [
+                0,
+                4515840
+              ],
+              [
+                6048000,
+                9660672
+              ]
+            ],
+            "mem_id": 1,
+            "peak_live_bytes": 8128512,
+            "peak_live_count": 3,
+            "peak_live_time": 445,
+            "trailing_hole_at_peak_bytes": 0
+          }
+        ],
+        "deterministic_placements": true,
+        "gap_to_lower_bound_bytes": 1532160,
+        "independent_greedy_bytes": 9660672,
+        "layout_failures": [],
+        "layout_valid": true,
+        "lower_bound_bufsizes": [
+          0,
+          8128512
+        ],
+        "lower_bound_bytes": 8128512,
+        "overlap_density": 0.012432895300200902,
+        "overlap_pair_count": 755,
+        "peak_live_allocation_count": 3,
+        "peak_live_bytes": 8128512,
+        "plan_bytes": 9660672,
+        "planner_max_s": 0.0104535840000608,
+        "planner_median_s": 0.010256573999868124,
+        "planner_min_s": 0.010203752999586868,
+        "planner_p90_s": 0.010452173999965453,
+        "possible_pair_count": 60726,
+        "primary_interval_count": 349,
+        "repeat_count": 7,
+        "repeat_times_s": [
+          0.010256573999868124,
+          0.01030988399998023,
+          0.010451233999901888,
+          0.010246144000120694,
+          0.010203752999586868,
+          0.010222333000001527,
+          0.0104535840000608
+        ],
+        "selected_policy": "greedy_tie_or_better"
+      }
+    ],
+    "policy": "upstream_greedy",
+    "possible_pair_count": 60726,
+    "primary_interval_count": 349,
+    "program_bytes": 77643008,
+    "program_load_time_s": 3.0480000077659497e-05,
+    "serialization_time_s": 0.03192226299961476,
+    "status": "planned",
+    "total_pipeline_time_s": 10.722163528999772
+  },
+  "wall_time_s": 48.57006452600035,
+  "weights": "deterministic_synthetic"
+}

@@ -1,0 +1,46 @@
+{
+  "all_gates_pass": true,
+  "base_commit": "c65ad53ad6861de3d9a76f31ddaf882a7115176f",
+  "byte_valid_rows": 10,
+  "candidate_bytes_total": 136608768,
+  "candidate_patch_sha256": "62ee481fe0e7eb54f0781a209eb00d79c68a1b478a540eab9a3b4bad45837eea",
+  "deterministic_rows": 10,
+  "direct_exact_rows": 10,
+  "eager_close_rows": 8,
+  "freeze_manifest_sha256": "983b0ff8b3dc454ba67d42acf7499f23d7d820fcd128b93422230e69983f1763",
+  "gates": {
+    "byte_regressions": true,
+    "direct_replay_mismatches": true,
+    "maximum_added_conditional_planner_ms": true,
+    "minimum_byte_valid_cases": true,
+    "previous_measured_gains_above_2_percent_preserved": true,
+    "soft_budget_controls_follow_policy": true
+  },
+  "maximum_added_planner_ms": 854.3060059964773,
+  "median_added_planner_ms": 108.81388949928805,
+  "median_gain_percent": 9.665342800853205,
+  "non_ok_rows": [
+    {
+      "case": "wb2_tv_resnet152",
+      "runtime_direct_exact": true,
+      "runtime_eager_close": false,
+      "status": "nonconfirmatory_output"
+    },
+    {
+      "case": "wb2_tv_wide_resnet101_2",
+      "runtime_direct_exact": true,
+      "runtime_eager_close": false,
+      "status": "nonconfirmatory_output"
+    }
+  ],
+  "regressions": 0,
+  "rows": 10,
+  "saved_bytes_total": 19455504,
+  "schema_version": 1,
+  "soft_budget_control_rows": 2,
+  "soft_budget_controls_running_candidate": 2,
+  "ties": 2,
+  "upstream_bytes_total": 156064272,
+  "weighted_gain_percent": 12.466340790671167,
+  "wins": 8
+}

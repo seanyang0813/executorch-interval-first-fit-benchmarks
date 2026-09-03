@@ -1,0 +1,606 @@
+diff --git a/exir/memory_planning.py b/exir/memory_planning.py
+index 44b5358545..655a1b9887 100644
+--- a/exir/memory_planning.py
++++ b/exir/memory_planning.py
+@@ -1149,6 +1149,253 @@ def greedy(
+     return greedy_result
+ 
+ 
++def _stable_spec_order(
++    specs: Set[TensorSpec],
++    graph_module: torch.fx.GraphModule,
++    graph_signature: ExportGraphSignature,
++) -> Dict[TensorSpec, int]:
++    ordered_specs = collect_specs_from_nodes(
++        graph_module.graph.nodes,
++        graph_signature,
++        ignore_graph_input=False,
++        ignore_graph_output=False,
++        ignore_mutable_buffers=False,
++        ignore_const=False,
++        ignore_out_var_node=False,
++        dedup=True,
++        do_assertion=False,
++        ignore_dynamic_unbound_tensor=False,
++    )
++    order = {spec: index for index, spec in enumerate(ordered_specs) if spec in specs}
++    internal_assert(
++        len(order) == len(specs),
++        "Every planned TensorSpec must occur in graph order.",
++    )
++    return order
++
++
++def _arena_base_offsets(
++    graph_module: torch.fx.GraphModule,
++    mem_ids: Set[int],
++    alignment: int,
++) -> Dict[int, int]:
++    input_sizes = getattr(graph_module, "input_mem_buffer_sizes", None)
++    if input_sizes is None:
++        input_sizes = []
++    return {
++        mem_id: (
++            (input_sizes[mem_id] + alignment - 1) // alignment * alignment
++            if mem_id < len(input_sizes)
++            else 0
++        )
++        for mem_id in mem_ids
++    }
++
++
++def interval_first_fit(
++    alignment: int,
++    specs: Set[TensorSpec],
++    graph_module: torch.fx.GraphModule,
++    graph_signature: ExportGraphSignature,
++    extra_padding: int = 0,
++) -> MemoryAlgoResult:
++    """Place size-sorted tensors at the first aligned legal arena offset."""
++    for spec in specs:
++        spec.realign(alignment)
++
++    if any(spec.storage_base is not None for spec in specs):
++        return greedy(
++            alignment,
++            specs,
++            graph_module,
++            graph_signature,
++            extra_padding,
++        )
++    if not specs:
++        return MemoryAlgoResult({}, [0, 0])
++
++    order = _stable_spec_order(specs, graph_module, graph_signature)
++    sorted_specs = sorted(
++        specs,
++        key=lambda spec: (
++            -spec.allocated_memory,
++            cast(int, spec.lifetime[0]),
++            cast(int, spec.lifetime[1]),
++            order[spec],
++        ),
++    )
++    mem_ids = {
++        cast(int, spec.mem_id) if spec.mem_id is not None else 1 for spec in specs
++    }
++    arena_bases = _arena_base_offsets(graph_module, mem_ids, alignment)
++    result = MemoryAlgoResult({}, [0] * (max(mem_ids) + 1))
++
++    for spec in sorted_specs:
++        mem_id = cast(int, spec.mem_id) if spec.mem_id is not None else 1
++        occupied_ranges = sorted(
++            (
++                allocation.mem_offset,
++                allocation.mem_offset + other_spec.allocated_memory,
++            )
++            for other_spec, allocation in result.spec_dict.items()
++            if allocation.mem_id == mem_id
++            and not (
++                cast(int, other_spec.lifetime[1]) < cast(int, spec.lifetime[0])
++                or cast(int, spec.lifetime[1]) < cast(int, other_spec.lifetime[0])
++            )
++        )
++        offset = arena_bases[mem_id]
++        for occupied_start, occupied_end in occupied_ranges:
++            if occupied_end <= offset:
++                continue
++            if offset + spec.allocated_memory <= occupied_start:
++                break
++            offset = max(offset, occupied_end)
++
++        result.spec_dict[spec] = SpecAllocResult(
++            mem_id=mem_id,
++            mem_obj_id=0,
++            mem_offset=offset,
++        )
++        result.bufsizes[mem_id] = max(
++            result.bufsizes[mem_id],
++            offset + spec.allocated_memory,
++        )
++
++    # Spatially overlapping ranges must share a memory object ID.
++    for mem_id in mem_ids:
++        component_id = -1
++        component_end = -1
++        for spec, allocation in sorted(
++            (
++                (spec, allocation)
++                for spec, allocation in result.spec_dict.items()
++                if allocation.mem_id == mem_id
++            ),
++            key=lambda item: item[1].mem_offset,
++        ):
++            start = allocation.mem_offset
++            end = start + spec.allocated_memory
++            if start >= component_end:
++                component_id += 1
++                component_end = end
++            else:
++                component_end = max(component_end, end)
++            allocation.mem_obj_id = component_id
++
++    for mem_id in mem_ids:
++        result.bufsizes[mem_id] += extra_padding
++    return result
++
++
++def _peak_live_lower_bound_bufsizes(
++    alignment: int,
++    specs: Set[TensorSpec],
++    graph_module: torch.fx.GraphModule,
++    extra_padding: int = 0,
++) -> Optional[List[int]]:
++    """Return a sound per-arena lower bound, or None for unsupported aliases."""
++    if any(spec.storage_base is not None for spec in specs):
++        return None
++    if not specs:
++        return [0, 0]
++
++    for spec in specs:
++        spec.realign(alignment)
++
++    mem_ids = {
++        cast(int, spec.mem_id) if spec.mem_id is not None else 1 for spec in specs
++    }
++    arena_bases = _arena_base_offsets(graph_module, mem_ids, alignment)
++    events_by_mem_id: Dict[int, Dict[int, int]] = {mem_id: {} for mem_id in mem_ids}
++    for spec in specs:
++        start = spec.lifetime[0]
++        end = spec.lifetime[1]
++        if not isinstance(start, int) or not isinstance(end, int):
++            return None
++        mem_id = cast(int, spec.mem_id) if spec.mem_id is not None else 1
++        events = events_by_mem_id[mem_id]
++        events[start] = events.get(start, 0) + spec.allocated_memory
++        events[end + 1] = events.get(end + 1, 0) - spec.allocated_memory
++
++    lower_bound = [0] * (max(mem_ids) + 1)
++    for mem_id, events in events_by_mem_id.items():
++        live_bytes = 0
++        peak_live_bytes = 0
++        for _, delta in sorted(events.items()):
++            live_bytes += delta
++            peak_live_bytes = max(peak_live_bytes, live_bytes)
++        lower_bound[mem_id] = arena_bases[mem_id] + peak_live_bytes + extra_padding
++    return lower_bound
++
++
++_INTERVAL_FIRST_FIT_SOFT_MAX_PAIR_SCANS = 2_000_000
++_INTERVAL_FIRST_FIT_HARD_MAX_PAIR_SCANS = 5_000_000
++_INTERVAL_FIRST_FIT_MIN_POTENTIAL_SAVINGS_PERCENT = 2
++
++
++def greedy_interval_first_fit_conditional(
++    alignment: int,
++    specs: Set[TensorSpec],
++    graph_module: torch.fx.GraphModule,
++    graph_signature: ExportGraphSignature,
++    extra_padding: int = 0,
++) -> MemoryAlgoResult:
++    """Run interval first-fit when bounded work has enough potential savings."""
++    for spec in specs:
++        spec.realign(alignment)
++
++    if any(spec.storage_base is not None for spec in specs):
++        return greedy(
++            alignment,
++            specs,
++            graph_module,
++            graph_signature,
++            extra_padding,
++        )
++
++    greedy_result = greedy(
++        alignment,
++        specs,
++        graph_module,
++        graph_signature,
++        extra_padding,
++    )
++    pair_scans = len(specs) * (len(specs) - 1) // 2
++    if pair_scans > _INTERVAL_FIRST_FIT_HARD_MAX_PAIR_SCANS:
++        return greedy_result
++
++    lower_bound = _peak_live_lower_bound_bufsizes(
++        alignment,
++        specs,
++        graph_module,
++        extra_padding,
++    )
++    if lower_bound is None or greedy_result.bufsizes == lower_bound:
++        return greedy_result
++
++    if pair_scans > _INTERVAL_FIRST_FIT_SOFT_MAX_PAIR_SCANS:
++        greedy_bytes = sum(greedy_result.bufsizes)
++        potential_savings = greedy_bytes - sum(lower_bound)
++        if (
++            potential_savings * 100
++            < greedy_bytes * _INTERVAL_FIRST_FIT_MIN_POTENTIAL_SAVINGS_PERCENT
++        ):
++            return greedy_result
++
++    candidate_result = interval_first_fit(
++        alignment,
++        specs,
++        graph_module,
++        graph_signature,
++        extra_padding,
++    )
++    return min(
++        (greedy_result, candidate_result),
++        key=lambda result: sum(result.bufsizes),
++    )
++
++
+ class MemoryPlanningAlgorithmSuite:
+     def __init__(
+         self,
+diff --git a/exir/tests/test_memory_planning.py b/exir/tests/test_memory_planning.py
+index 37bc088cfc..21461d5ac9 100644
+--- a/exir/tests/test_memory_planning.py
++++ b/exir/tests/test_memory_planning.py
+@@ -9,7 +9,8 @@
+ 
+ import itertools
+ import unittest
+-from typing import Any, Callable, cast, List, Optional, Tuple, Type
++from typing import Any, Callable, cast, List, Optional, Set, Tuple, Type
++from unittest.mock import patch
+ 
+ import executorch.exir as exir
+ 
+@@ -32,11 +33,14 @@ from executorch.exir.memory_planning import (
+     _do_user_inputs_exist,
+     _extend_storage_base_lifetimes,
+     _is_inplace_node,
++    _peak_live_lower_bound_bufsizes,
+     apply_algo,
+     collect_specs_from_nodes,
+     filter_nodes,
+     get_node_tensor_specs,
+     greedy,
++    greedy_interval_first_fit_conditional,
++    interval_first_fit,
+     MemoryAlgoResult,
+     MemoryPlanningAlgorithmSuite,
+     naive,
+@@ -79,6 +83,318 @@ from torch.nn import functional as F
+ from torch.utils import _pytree as pytree
+ 
+ 
++class TestIntervalFirstFitMemoryPlanning(unittest.TestCase):
++    def _spec(
++        self,
++        size: int,
++        lifetime: List[int],
++        mem_id: Optional[int] = None,
++    ) -> TensorSpec:
++        spec = TensorSpec.from_tensor(torch.empty(size, dtype=torch.uint8))
++        spec.lifetime = lifetime
++        spec.mem_id = mem_id
++        return spec
++
++    def _graph_module(self, specs: List[TensorSpec]) -> GraphModule:
++        graph = Graph()
++        nodes = []
++        for index, spec in enumerate(specs):
++            node = graph.placeholder(f"input_{index}")
++            node.meta["spec"] = spec
++            nodes.append(node)
++        graph.output(tuple(nodes))
++        return GraphModule({}, graph)
++
++    def _assert_valid_allocations(
++        self,
++        result: MemoryAlgoResult,
++        specs: List[TensorSpec],
++    ) -> None:
++        for spec in specs:
++            allocation = result.spec_dict[spec]
++            self.assertEqual(allocation.mem_offset % spec.alignment, 0)
++
++        for left, right in itertools.combinations(specs, 2):
++            left_allocation = result.spec_dict[left]
++            right_allocation = result.spec_dict[right]
++            if left_allocation.mem_id != right_allocation.mem_id:
++                continue
++            left_end = left_allocation.mem_offset + left.allocated_memory
++            right_end = right_allocation.mem_offset + right.allocated_memory
++            if not (
++                left_end <= right_allocation.mem_offset
++                or right_end <= left_allocation.mem_offset
++            ):
++                self.assertEqual(
++                    left_allocation.mem_obj_id,
++                    right_allocation.mem_obj_id,
++                )
++            if cast(int, left.lifetime[1]) < cast(int, right.lifetime[0]) or cast(
++                int, right.lifetime[1]
++            ) < cast(int, left.lifetime[0]):
++                continue
++            self.assertTrue(
++                left_end <= right_allocation.mem_offset
++                or right_end <= left_allocation.mem_offset
++            )
++
++    def test_interval_first_fit_uses_hole_missed_by_greedy(self) -> None:
++        specs = [
++            self._spec(100, [0, 0]),
++            self._spec(60, [1, 2]),
++            self._spec(40, [2, 3]),
++            self._spec(30, [3, 4]),
++        ]
++        graph_module = self._graph_module(specs)
++
++        greedy_result = greedy(
++            1,
++            set(specs),
++            graph_module,
++            cast(ExportGraphSignature, None),
++        )
++        first_fit_result = interval_first_fit(
++            1,
++            set(specs),
++            graph_module,
++            cast(ExportGraphSignature, None),
++        )
++
++        self.assertEqual(greedy_result.bufsizes, [0, 130])
++        self.assertEqual(first_fit_result.bufsizes, [0, 100])
++        self.assertEqual(first_fit_result.spec_dict[specs[2]].mem_offset, 60)
++        self.assertEqual(first_fit_result.spec_dict[specs[3]].mem_offset, 0)
++        self._assert_valid_allocations(first_fit_result, specs)
++        self.assertEqual(
++            _peak_live_lower_bound_bufsizes(1, set(specs), graph_module),
++            [0, 100],
++        )
++        portfolio_result = greedy_interval_first_fit_conditional(
++            1,
++            set(specs),
++            graph_module,
++            cast(ExportGraphSignature, None),
++        )
++        self.assertEqual(portfolio_result.bufsizes, [0, 100])
++        self.assertLessEqual(
++            sum(portfolio_result.bufsizes),
++            sum(greedy_result.bufsizes),
++        )
++
++    def test_conditional_returns_upstream_on_lower_bound_tie(self) -> None:
++        larger = self._spec(15, [0, 0])
++        smaller = self._spec(9, [1, 1])
++        specs = [larger, smaller]
++        graph_module = self._graph_module(specs)
++
++        with patch("executorch.exir.memory_planning.interval_first_fit") as candidate:
++            result = greedy_interval_first_fit_conditional(
++                1,
++                cast(Set[TensorSpec], specs),
++                graph_module,
++                cast(ExportGraphSignature, None),
++            )
++
++        candidate.assert_not_called()
++        self.assertEqual(result.bufsizes, [0, 15])
++
++    def test_lower_bound_is_aligned_inclusive_and_per_arena(self) -> None:
++        arena_one_a = self._spec(17, [0, 1], mem_id=1)
++        arena_one_b = self._spec(1, [1, 2], mem_id=1)
++        arena_three_a = self._spec(33, [0, 0], mem_id=3)
++        arena_three_b = self._spec(16, [1, 1], mem_id=3)
++        specs = [arena_one_a, arena_one_b, arena_three_a, arena_three_b]
++        graph_module = self._graph_module(specs)
++        graph_module.input_mem_buffer_sizes = [0, 16, 0, 32]
++
++        lower_bound = _peak_live_lower_bound_bufsizes(
++            16,
++            set(specs),
++            graph_module,
++            extra_padding=8,
++        )
++        result = interval_first_fit(
++            16,
++            set(specs),
++            graph_module,
++            cast(ExportGraphSignature, None),
++            extra_padding=8,
++        )
++
++        self.assertEqual(lower_bound, [0, 72, 0, 88])
++        self.assertEqual(result.bufsizes, lower_bound)
++        self.assertEqual(result.spec_dict[arena_one_a].mem_offset, 16)
++        self.assertEqual(result.spec_dict[arena_one_b].mem_offset, 48)
++        self.assertNotEqual(
++            result.spec_dict[arena_one_a].mem_obj_id,
++            result.spec_dict[arena_one_b].mem_obj_id,
++        )
++        self._assert_valid_allocations(result, specs)
++        with patch("executorch.exir.memory_planning.interval_first_fit") as candidate:
++            conditional_result = greedy_interval_first_fit_conditional(
++                16,
++                set(specs),
++                graph_module,
++                cast(ExportGraphSignature, None),
++                extra_padding=8,
++            )
++        candidate.assert_not_called()
++        self.assertEqual(conditional_result.bufsizes, lower_bound)
++
++    def test_conditional_is_deterministic_for_ties(self) -> None:
++        specs = [
++            self._spec(32, [0, 1]),
++            self._spec(32, [0, 1]),
++            self._spec(32, [2, 3]),
++        ]
++        graph_module = self._graph_module(specs)
++
++        spec_set = set(specs)
++        first = greedy_interval_first_fit_conditional(
++            16,
++            spec_set,
++            graph_module,
++            cast(ExportGraphSignature, None),
++        )
++        second = greedy_interval_first_fit_conditional(
++            16,
++            spec_set,
++            graph_module,
++            cast(ExportGraphSignature, None),
++        )
++
++        self.assertEqual(first.bufsizes, second.bufsizes)
++        self.assertEqual(
++            [first.spec_dict[spec].mem_offset for spec in specs],
++            [second.spec_dict[spec].mem_offset for spec in specs],
++        )
++
++    def test_conditional_respects_hard_work_budget(self) -> None:
++        specs = [
++            self._spec(100, [0, 0]),
++            self._spec(60, [1, 2]),
++            self._spec(40, [2, 3]),
++            self._spec(30, [3, 4]),
++        ]
++        graph_module = self._graph_module(specs)
++
++        with (
++            patch(
++                "executorch.exir.memory_planning._INTERVAL_FIRST_FIT_HARD_MAX_PAIR_SCANS",
++                5,
++            ),
++            patch(
++                "executorch.exir.memory_planning._peak_live_lower_bound_bufsizes"
++            ) as lower_bound,
++            patch("executorch.exir.memory_planning.interval_first_fit") as candidate,
++        ):
++            result = greedy_interval_first_fit_conditional(
++                1,
++                set(specs),
++                graph_module,
++                cast(ExportGraphSignature, None),
++            )
++
++        lower_bound.assert_not_called()
++        candidate.assert_not_called()
++        self.assertEqual(result.bufsizes, [0, 130])
++
++    def test_conditional_uses_potential_savings_above_soft_budget(self) -> None:
++        specs = [
++            self._spec(100, [0, 0]),
++            self._spec(60, [1, 2]),
++            self._spec(40, [2, 3]),
++            self._spec(30, [3, 4]),
++        ]
++        graph_module = self._graph_module(specs)
++
++        with (
++            patch(
++                "executorch.exir.memory_planning._INTERVAL_FIRST_FIT_SOFT_MAX_PAIR_SCANS",
++                5,
++            ),
++            patch(
++                "executorch.exir.memory_planning._INTERVAL_FIRST_FIT_MIN_POTENTIAL_SAVINGS_PERCENT",
++                100,
++            ),
++            patch("executorch.exir.memory_planning.interval_first_fit") as candidate,
++        ):
++            skipped_result = greedy_interval_first_fit_conditional(
++                1,
++                set(specs),
++                graph_module,
++                cast(ExportGraphSignature, None),
++            )
++
++        candidate.assert_not_called()
++        self.assertEqual(skipped_result.bufsizes, [0, 130])
++
++        with patch(
++            "executorch.exir.memory_planning._INTERVAL_FIRST_FIT_SOFT_MAX_PAIR_SCANS",
++            5,
++        ):
++            selected_result = greedy_interval_first_fit_conditional(
++                1,
++                set(specs),
++                graph_module,
++                cast(ExportGraphSignature, None),
++            )
++
++        self.assertEqual(selected_result.bufsizes, [0, 100])
++
++    def test_storage_alias_falls_back_for_entire_planning_unit(self) -> None:
++        base = self._spec(15, [0, 2], mem_id=1)
++        child = self._spec(9, [0, 2], mem_id=1)
++        other = self._spec(8, [3, 4], mem_id=1)
++        child.storage_base = base
++        child.storage_base_offset = 0
++        specs = [base, child, other]
++        graph_module = self._graph_module(specs)
++
++        interval_result = interval_first_fit(
++            1,
++            cast(Set[TensorSpec], specs),
++            graph_module,
++            cast(ExportGraphSignature, None),
++        )
++        greedy_result = greedy(
++            1,
++            cast(Set[TensorSpec], specs),
++            graph_module,
++            cast(ExportGraphSignature, None),
++        )
++        with patch("executorch.exir.memory_planning.interval_first_fit") as candidate:
++            candidate_result = greedy_interval_first_fit_conditional(
++                1,
++                cast(Set[TensorSpec], specs),
++                graph_module,
++                cast(ExportGraphSignature, None),
++            )
++
++        candidate.assert_not_called()
++        self.assertIsNone(_peak_live_lower_bound_bufsizes(1, set(specs), graph_module))
++        self.assertEqual(interval_result.bufsizes, greedy_result.bufsizes)
++        self.assertEqual(candidate_result.bufsizes, greedy_result.bufsizes)
++        self.assertEqual(
++            {
++                spec: (
++                    allocation.mem_id,
++                    allocation.mem_obj_id,
++                    allocation.mem_offset,
++                )
++                for spec, allocation in candidate_result.spec_dict.items()
++            },
++            {
++                spec: (
++                    allocation.mem_id,
++                    allocation.mem_obj_id,
++                    allocation.mem_offset,
++                )
++                for spec, allocation in greedy_result.spec_dict.items()
++            },
++        )
++
++
+ def swap_modules(
+     module: torch.nn.Module,
+     condition: Callable[[torch.nn.Module], bool],

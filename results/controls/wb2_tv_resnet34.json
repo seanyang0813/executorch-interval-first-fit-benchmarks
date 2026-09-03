@@ -1,0 +1,269 @@
+{
+  "added_planner_ms": -0.02764199996363459,
+  "base_commit": "c65ad53ad6861de3d9a76f31ddaf882a7115176f",
+  "baseline_bytes": 6422528,
+  "byte_valid": true,
+  "candidate_bytes": 6422528,
+  "candidate_excess_bytes": 0,
+  "candidate_no_larger": true,
+  "candidate_patch_sha256": "62ee481fe0e7eb54f0781a209eb00d79c68a1b478a540eab9a3b4bad45837eea",
+  "candidate_planner_fraction_of_pipeline": 0.0009152022349291672,
+  "case": "wb2_tv_resnet34",
+  "category": "image classification",
+  "change_bytes": 0,
+  "conditional_two_strategy": {
+    "allocation_count": 197,
+    "deterministic_placements": true,
+    "edge_export_time_s": 2.9956761130000586,
+    "layout_valid": true,
+    "lower_bound_bytes": 6422528,
+    "lowering_time_s": 0.44433746300001076,
+    "max_activation_bytes": 6422528,
+    "method_buffer_sizes": {
+      "forward": [
+        0,
+        6422528
+      ]
+    },
+    "method_bytes": {
+      "forward": 6422528
+    },
+    "overlap_density": 0.0272258064516129,
+    "overlap_pair_count": 211,
+    "planner_median_s": 0.0031798570000773907,
+    "planner_p90_s": 0.0032531906000485833,
+    "planning_units": [
+      {
+        "actual_planner_time_s": 0.0033062010001003728,
+        "alias_count": 0,
+        "alias_fallback_exact": null,
+        "allocation_count": 197,
+        "arenas": [
+          {
+            "allocation_count": 125,
+            "arena_bytes": 6422528,
+            "base_offset": 0,
+            "holes_at_peak_bytes": 0,
+            "holes_at_peak_count": 0,
+            "internal_holes_at_peak_bytes": 0,
+            "leading_hole_at_peak_bytes": 0,
+            "live_ranges_at_peak_sample": [
+              [
+                0,
+                6422528
+              ]
+            ],
+            "mem_id": 1,
+            "peak_live_bytes": 6422528,
+            "peak_live_count": 2,
+            "peak_live_time": 185,
+            "trailing_hole_at_peak_bytes": 0
+          }
+        ],
+        "deterministic_placements": true,
+        "gap_to_lower_bound_bytes": 0,
+        "independent_greedy_bytes": 6422528,
+        "layout_failures": [],
+        "layout_valid": true,
+        "lower_bound_bufsizes": [
+          0,
+          6422528
+        ],
+        "lower_bound_bytes": 6422528,
+        "overlap_density": 0.0272258064516129,
+        "overlap_pair_count": 211,
+        "peak_live_allocation_count": 2,
+        "peak_live_bytes": 6422528,
+        "plan_bytes": 6422528,
+        "planner_max_s": 0.0033187310000357684,
+        "planner_median_s": 0.0031798570000773907,
+        "planner_min_s": 0.003172186000028887,
+        "planner_p90_s": 0.0032531906000485833,
+        "possible_pair_count": 7750,
+        "primary_interval_count": 125,
+        "repeat_count": 7,
+        "repeat_times_s": [
+          0.003180326000006062,
+          0.003172186000028887,
+          0.0031772859999819048,
+          0.0031798570000773907,
+          0.0032094970000571266,
+          0.0031730559999232355,
+          0.0033187310000357684
+        ],
+        "selected_policy": "greedy_lower_bound_early_exit"
+      }
+    ],
+    "policy": "conditional_two_strategy",
+    "possible_pair_count": 7750,
+    "primary_interval_count": 125,
+    "program_bytes": 87185696,
+    "program_load_time_s": 2.2790999992139405e-05,
+    "serialization_time_s": 0.03447203900009299,
+    "status": "planned",
+    "total_pipeline_time_s": 3.4744856150001624
+  },
+  "deterministic_placements": true,
+  "dynamic_shapes": false,
+  "eager_output_finite": true,
+  "example_inputs": [
+    {
+      "device": "cpu",
+      "dtype": "torch.float32",
+      "shape": [
+        1,
+        3,
+        224,
+        224
+      ]
+    }
+  ],
+  "family": "ResNet",
+  "gain_fraction": 0.0,
+  "lower_bound_bytes": 6422528,
+  "planner_ratio": 0.9913820705904254,
+  "planner_repeats": 7,
+  "replays": [
+    {
+      "baseline_finite": true,
+      "baseline_vs_candidate": {
+        "close": true,
+        "exact": true,
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0
+      },
+      "baseline_vs_eager": {
+        "close": true,
+        "exact": false,
+        "max_abs_error": 7.2479248046875e-05,
+        "max_rel_error": 0.06527061760425568
+      },
+      "candidate_finite": true,
+      "candidate_repeat": {
+        "close": true,
+        "exact": true,
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0
+      },
+      "candidate_vs_eager": {
+        "close": true,
+        "exact": false,
+        "max_abs_error": 7.2479248046875e-05,
+        "max_rel_error": 0.06527061760425568
+      },
+      "eager_finite": true,
+      "inputs": [
+        {
+          "device": "cpu",
+          "dtype": "torch.float32",
+          "shape": [
+            1,
+            3,
+            224,
+            224
+          ]
+        }
+      ]
+    }
+  ],
+  "runtime_direct_exact": true,
+  "runtime_eager_close": true,
+  "schema_version": 1,
+  "seed": 2501010224,
+  "status": "ok",
+  "upstream_excess_bytes": 0,
+  "upstream_greedy": {
+    "allocation_count": 197,
+    "deterministic_placements": true,
+    "edge_export_time_s": 3.2352000309999767,
+    "layout_valid": true,
+    "lower_bound_bytes": 6422528,
+    "lowering_time_s": 0.4571823259999519,
+    "max_activation_bytes": 6422528,
+    "method_buffer_sizes": {
+      "forward": [
+        0,
+        6422528
+      ]
+    },
+    "method_bytes": {
+      "forward": 6422528
+    },
+    "overlap_density": 0.0272258064516129,
+    "overlap_pair_count": 211,
+    "planner_median_s": 0.0032074990000410253,
+    "planner_p90_s": 0.0038592504000462212,
+    "planning_units": [
+      {
+        "actual_planner_time_s": 0.0033001719999674606,
+        "alias_count": 0,
+        "alias_fallback_exact": null,
+        "allocation_count": 197,
+        "arenas": [
+          {
+            "allocation_count": 125,
+            "arena_bytes": 6422528,
+            "base_offset": 0,
+            "holes_at_peak_bytes": 0,
+            "holes_at_peak_count": 0,
+            "internal_holes_at_peak_bytes": 0,
+            "leading_hole_at_peak_bytes": 0,
+            "live_ranges_at_peak_sample": [
+              [
+                0,
+                6422528
+              ]
+            ],
+            "mem_id": 1,
+            "peak_live_bytes": 6422528,
+            "peak_live_count": 2,
+            "peak_live_time": 185,
+            "trailing_hole_at_peak_bytes": 0
+          }
+        ],
+        "deterministic_placements": true,
+        "gap_to_lower_bound_bytes": 0,
+        "independent_greedy_bytes": 6422528,
+        "layout_failures": [],
+        "layout_valid": true,
+        "lower_bound_bufsizes": [
+          0,
+          6422528
+        ],
+        "lower_bound_bytes": 6422528,
+        "overlap_density": 0.0272258064516129,
+        "overlap_pair_count": 211,
+        "peak_live_allocation_count": 2,
+        "peak_live_bytes": 6422528,
+        "plan_bytes": 6422528,
+        "planner_max_s": 0.0038987610000731365,
+        "planner_median_s": 0.0032074990000410253,
+        "planner_min_s": 0.002654198999948676,
+        "planner_p90_s": 0.0038592504000462212,
+        "possible_pair_count": 7750,
+        "primary_interval_count": 125,
+        "repeat_count": 7,
+        "repeat_times_s": [
+          0.0038987610000731365,
+          0.0032074990000410253,
+          0.0027432629999566416,
+          0.002654198999948676,
+          0.0030517330000066067,
+          0.003832910000028278,
+          0.0037752580000187663
+        ],
+        "selected_policy": "greedy_lower_bound_early_exit"
+      }
+    ],
+    "policy": "upstream_greedy",
+    "possible_pair_count": 7750,
+    "primary_interval_count": 125,
+    "program_bytes": 87185696,
+    "program_load_time_s": 3.146100004869368e-05,
+    "serialization_time_s": 0.046108398000001216,
+    "status": "planned",
+    "total_pipeline_time_s": 3.7384907549999298
+  },
+  "wall_time_s": 32.02620122799999,
+  "weights": "deterministic_synthetic"
+}

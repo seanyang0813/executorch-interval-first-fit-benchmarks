@@ -1,0 +1,295 @@
+{
+  "added_planner_ms": 25.542759000018123,
+  "base_commit": "fdae101f75b4d59075dd60117c84182e11aadf48",
+  "baseline_bytes": 5513216,
+  "byte_valid": true,
+  "candidate_bytes": 5513216,
+  "candidate_excess_bytes": 4096,
+  "candidate_no_larger": true,
+  "candidate_patch_sha256": "477f961ab6a484d14cdfa4ab99f5042dc258c77df10c40d5fc73e8299d1f57ec",
+  "candidate_planner_fraction_of_pipeline": 0.04556785189554347,
+  "case": "registry_emformer_predict",
+  "category": "audio/speech",
+  "change_bytes": 0,
+  "conditional_two_strategy": {
+    "allocation_count": 9238,
+    "deterministic_placements": true,
+    "edge_export_time_s": 58.28904446300021,
+    "layout_valid": true,
+    "lower_bound_bytes": 5509120,
+    "lowering_time_s": 12.270741713999996,
+    "max_activation_bytes": 5513216,
+    "method_buffer_sizes": {
+      "forward": [
+        0,
+        5513216
+      ]
+    },
+    "method_bytes": {
+      "forward": 5513216
+    },
+    "overlap_density": 0.02759992024507366,
+    "overlap_pair_count": 1177570,
+    "planner_median_s": 3.2159823039999083,
+    "planner_p90_s": 3.2453432785998757,
+    "planning_units": [
+      {
+        "actual_planner_time_s": 3.0454096040000422,
+        "alias_count": 0,
+        "alias_fallback_exact": null,
+        "allocation_count": 9238,
+        "arenas": [
+          {
+            "allocation_count": 9238,
+            "arena_bytes": 5513216,
+            "base_offset": 0,
+            "holes_at_peak_bytes": 4096,
+            "holes_at_peak_count": 1,
+            "internal_holes_at_peak_bytes": 4096,
+            "leading_hole_at_peak_bytes": 0,
+            "live_ranges_at_peak_sample": [
+              [
+                0,
+                5507072
+              ],
+              [
+                5511168,
+                5513216
+              ]
+            ],
+            "mem_id": 1,
+            "peak_live_bytes": 5509120,
+            "peak_live_count": 5,
+            "peak_live_time": 44,
+            "trailing_hole_at_peak_bytes": 0
+          }
+        ],
+        "deterministic_placements": true,
+        "gap_to_lower_bound_bytes": 4096,
+        "independent_greedy_bytes": 5513216,
+        "layout_failures": [],
+        "layout_valid": true,
+        "lower_bound_bufsizes": [
+          0,
+          5509120
+        ],
+        "lower_bound_bytes": 5509120,
+        "overlap_density": 0.02759992024507366,
+        "overlap_pair_count": 1177570,
+        "peak_live_allocation_count": 5,
+        "peak_live_bytes": 5509120,
+        "plan_bytes": 5513216,
+        "planner_max_s": 3.2600970109999707,
+        "planner_median_s": 3.2159823039999083,
+        "planner_min_s": 3.182403303000001,
+        "planner_p90_s": 3.2453432785998757,
+        "possible_pair_count": 42665703,
+        "primary_interval_count": 9238,
+        "repeat_count": 7,
+        "repeat_times_s": [
+          3.182403303000001,
+          3.2026437050001277,
+          3.2159823039999083,
+          3.2355074569998123,
+          3.2290698769998016,
+          3.2067610860001423,
+          3.2600970109999707
+        ],
+        "selected_policy": "greedy_tie_or_better"
+      }
+    ],
+    "policy": "conditional_two_strategy",
+    "possible_pair_count": 42665703,
+    "primary_interval_count": 9238,
+    "program_bytes": 37059456,
+    "program_load_time_s": 2.40000001667795e-05,
+    "serialization_time_s": 0.015897560999974303,
+    "status": "planned",
+    "total_pipeline_time_s": 70.57568373800018
+  },
+  "deterministic_placements": true,
+  "dynamic_shapes": false,
+  "eager_output_finite": true,
+  "example_inputs": [
+    {
+      "device": "cpu",
+      "dtype": "torch.int64",
+      "shape": [
+        1,
+        128
+      ]
+    },
+    {
+      "device": "cpu",
+      "dtype": "torch.int64",
+      "shape": [
+        1
+      ]
+    },
+    {
+      "type": "NoneType",
+      "value": "None"
+    }
+  ],
+  "family": "Emformer",
+  "gain_fraction": 0.0,
+  "lower_bound_bytes": 5509120,
+  "planner_ratio": 1.0080060313445052,
+  "planner_repeats": 7,
+  "replays": [
+    {
+      "baseline_finite": true,
+      "baseline_vs_candidate": {
+        "close": true,
+        "exact": true,
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0
+      },
+      "baseline_vs_eager": {
+        "close": true,
+        "exact": false,
+        "max_abs_error": 5.817413330078125e-05,
+        "max_rel_error": 0.02708132192492485
+      },
+      "candidate_finite": true,
+      "candidate_repeat": {
+        "close": true,
+        "exact": true,
+        "max_abs_error": 0.0,
+        "max_rel_error": 0.0
+      },
+      "candidate_vs_eager": {
+        "close": true,
+        "exact": false,
+        "max_abs_error": 5.817413330078125e-05,
+        "max_rel_error": 0.02708132192492485
+      },
+      "eager_finite": true,
+      "inputs": [
+        {
+          "device": "cpu",
+          "dtype": "torch.int64",
+          "shape": [
+            1,
+            128
+          ]
+        },
+        {
+          "device": "cpu",
+          "dtype": "torch.int64",
+          "shape": [
+            1
+          ]
+        },
+        {
+          "type": "NoneType",
+          "value": "None"
+        }
+      ]
+    }
+  ],
+  "runtime_direct_exact": true,
+  "runtime_eager_close": true,
+  "schema_version": 1,
+  "seed": 576895377,
+  "status": "ok",
+  "upstream_excess_bytes": 4096,
+  "upstream_greedy": {
+    "allocation_count": 9238,
+    "deterministic_placements": true,
+    "edge_export_time_s": 57.81346758900008,
+    "layout_valid": true,
+    "lower_bound_bytes": 5509120,
+    "lowering_time_s": 13.609008831999972,
+    "max_activation_bytes": 5513216,
+    "method_buffer_sizes": {
+      "forward": [
+        0,
+        5513216
+      ]
+    },
+    "method_bytes": {
+      "forward": 5513216
+    },
+    "overlap_density": 0.02759992024507366,
+    "overlap_pair_count": 1177570,
+    "planner_median_s": 3.19043954499989,
+    "planner_p90_s": 3.2920572726000956,
+    "planning_units": [
+      {
+        "actual_planner_time_s": 3.2300957159998234,
+        "alias_count": 0,
+        "alias_fallback_exact": null,
+        "allocation_count": 9238,
+        "arenas": [
+          {
+            "allocation_count": 9238,
+            "arena_bytes": 5513216,
+            "base_offset": 0,
+            "holes_at_peak_bytes": 4096,
+            "holes_at_peak_count": 1,
+            "internal_holes_at_peak_bytes": 4096,
+            "leading_hole_at_peak_bytes": 0,
+            "live_ranges_at_peak_sample": [
+              [
+                0,
+                5507072
+              ],
+              [
+                5511168,
+                5513216
+              ]
+            ],
+            "mem_id": 1,
+            "peak_live_bytes": 5509120,
+            "peak_live_count": 5,
+            "peak_live_time": 44,
+            "trailing_hole_at_peak_bytes": 0
+          }
+        ],
+        "deterministic_placements": true,
+        "gap_to_lower_bound_bytes": 4096,
+        "independent_greedy_bytes": 5513216,
+        "layout_failures": [],
+        "layout_valid": true,
+        "lower_bound_bufsizes": [
+          0,
+          5509120
+        ],
+        "lower_bound_bytes": 5509120,
+        "overlap_density": 0.02759992024507366,
+        "overlap_pair_count": 1177570,
+        "peak_live_allocation_count": 5,
+        "peak_live_bytes": 5509120,
+        "plan_bytes": 5513216,
+        "planner_max_s": 3.3612423480001326,
+        "planner_median_s": 3.19043954499989,
+        "planner_min_s": 3.1658255949998875,
+        "planner_p90_s": 3.2920572726000956,
+        "possible_pair_count": 42665703,
+        "primary_interval_count": 9238,
+        "repeat_count": 7,
+        "repeat_times_s": [
+          3.1864330509999945,
+          3.245933889000071,
+          3.1658255949998875,
+          3.174195696000197,
+          3.3612423480001326,
+          3.224480027000027,
+          3.19043954499989
+        ],
+        "selected_policy": "greedy_tie_or_better"
+      }
+    ],
+    "policy": "upstream_greedy",
+    "possible_pair_count": 42665703,
+    "primary_interval_count": 9238,
+    "program_bytes": 37059456,
+    "program_load_time_s": 3.146099993500684e-05,
+    "serialization_time_s": 0.0149518570001419,
+    "status": "planned",
+    "total_pipeline_time_s": 71.4374282780002
+  },
+  "wall_time_s": 201.3105402870001,
+  "weights": "registry_default"
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "frozen_before_execution": true,
+  "pinned_upstream": "457a2a8b9f7d103765d73752c5d2efc6b2e8c8bc",
+  "clean_patch_sha256": "e42da2baf7317eab49279ec47c62bf7af90f0967e8d6ec07fef668dc63c454c9",
+  "reason": "The first Emformer confirmation was byte-exact but exceeded its 100 ms timing gate. The final patch now takes the unconditional hard-budget return before computing the lower bound.",
+  "preserved_first_observation": {
+    "candidate_bytes": 5513216,
+    "upstream_bytes": 5513216,
+    "added_planner_ms": 233.74189800017575,
+    "timing_gate_passed": false
+  },
+  "rerun_case": "registry_emformer_predict",
+  "expected_upstream_bytes": 5513216,
+  "expected_candidate_bytes": 5513216,
+  "maximum_added_planner_ms": 100,
+  "required_runtime_direct_exact": true,
+  "required_deterministic_placements": true
+}
